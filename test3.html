@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="SHORTCUT ICON" href="http://yann.wattier.free.fr/Block.ico" />
+    <title>Nos photographes</title>
+</head>
+<body>
+<h1 id="erreur"></h1>
+<!-- <img src="" alt="" id="img"> -->
+
+<img src="" alt="photo" id="img" width="100px" height="100px">
+
+<h2 id="nom"></h2>
+
+
+<script>
+
+    // fetch("https://api.thecatapi.com/v1/images/search")
+    //     .then(res => console.log(res))
+
+    fetch('./FishEyeData.json')
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        // Work with JSON data here
+        // console.log(data);
+        
+        // document
+        //     .getElementById("nom")
+        //     .innerText = data.photographers[0].name;
+        
+        // img.src = "./Photos/Photographers_ID_Photos/" + data.photographers[0].portrait;
+
+
+        for (let i in data.photographers) {
+            console.log(data.photographers[i].name);
+            img.src = "./Photos/Photographers_ID_Photos/" + data.photographers[i].portrait;
+
+            document
+                .getElementById("nom")
+                .innerText = data.photographers[i].name;
+        }
+        
+    })
+
+    .catch(err => {
+        console.log("ERREUR");
+        document.getElementById("erreur").innerHTML = "Erreur 404";
+    });
+
+</script>
+</body>
+</html>
