@@ -6,6 +6,9 @@
     <link rel="SHORTCUT ICON" href="http://yann.wattier.free.fr/Block.ico" />
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- AWESOME -->
+    <script src="https://kit.fontawesome.com/61dc271aba.js" crossorigin="anonymous" defer></script>
+    <!-- JS -->
     <script src="photographer.js" type="module" defer></script>
 
     <title id="onglet">Photographe</title>
@@ -29,19 +32,31 @@
                     </div>
                     <button class="btn_contact">Contactez-moi</button>
                 </div>
-                <img src="" id="photo_photographer">
+                <img src="" alt="" id="photo_photographer">
             </section>
 
             <!-- ========================== Portfolio -->
             <section class="portfolio">
-                <label for="portfolio-select">Trier par</label>
+                <div class="dropdown">
+                    <button class="dropdown-toggle" type="button" aria-haspopup="true">
+                      Select :
+                    </button>
+                    <ul class="dropdown-menu" role="listbox" aria-expanded="false">
+                      <li role="option" tabindex="0">Popularité</li>
+                      <li role="option" tabindex="0">Date</li>
+                      <li role="option" tabindex="0">Titre</li>
+                    </ul>
+                </div>
 
-                <select  onchange="updated(this)" name="portfolio" id="portfolio-select">
-                    <option value="1">Popularité</option>
-                    <option value="2">Date</option>
-                    <option value="3">Titre</option>
-                </select>
+                <!-- ========================== modal Lightbox -->
+                <div id="portfolio_photos" class="portfolio_container"></div>
+
             </section>
+
+            <div class="bloc_counter">
+                <div class="count">0</div>
+                <div class="price"></div>
+            </div>
 
             <!-- ========================== modal FORM -->
             <section class="bground">
@@ -76,9 +91,6 @@
                     </div>
                 </div>
             </section>
-
-            <!-- ========================== modal Lightbox -->
-            <section id="portfolio_photos" class="portfolio_container"></section>
 
         </section>
     </main>

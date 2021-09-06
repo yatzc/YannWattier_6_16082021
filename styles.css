@@ -71,19 +71,41 @@ label {
 /* #region ========== PAGE index */
 body {
     font-family: 'DM Sans', sans-serif;
-    background-color: #FFFFFF;
+    background-color: #E5E5E5;
+    width: 80%;
+    margin: 2em auto;
 }
 
 header {
     display: flex;
     margin: 2em;
-    background-color: salmon;
 }
 
 h1 {
     top: 0;
     right: 3em;
     color: #901C1C;
+}
+
+.bloc_passer {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    text-align: center;
+    background: #DB8876;
+    width: 182px;
+    height: 30px;
+    border-radius: 5px;
+    align-items: center;
+    
+}
+
+.h1_index {
+    position: fixed;
+    top: 44px;
+    right: 200px;
+    width: 306px;
+    height: 47px;
 }
 
 .container {
@@ -150,6 +172,11 @@ nav li {
     text-align: center;
     height: 21px;
     cursor: pointer;
+    padding: 0 5px 0 5px;
+    margin: 5px;
+}
+#identity_card_tags a {
+    text-decoration: none;
 }
 .btn_tag:hover,
 .btn_tag:focus {
@@ -231,20 +258,20 @@ nav li {
 
 /* #region ========== PAGE photographer */
 
-/* #region PAGE */
+/* #region main */
 
 .container_page {
-    width: 90%;
-    max-width: 1500px;
-    margin: 2em auto;
+    /* width: 90%;
+    max-width: 1300px;
+    margin: 2em auto; */
 }
-
 
 /* identity */
 .identity_card {
     display: flex;
     justify-content: space-around;
     margin: 0 auto;
+    background: #FAFAFA;
 }
 .identity_card #photo_photographer {
     border-radius: 50%;
@@ -294,9 +321,11 @@ nav li {
     left: -2px;
 }
 
-/* portfolio */
+/* ============= portfolio */
 .portfolio {
-    margin: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .portfolio label {
@@ -308,25 +337,144 @@ nav li {
     text-align: left;
     margin: 0 1em 0 0;
 }
-.portfolio select {
+
+
+
+
+/* ==== SELECT */
+button, li {
+    font-family: DM Sans, sans-serif;
     font-size: 18px;
     font-weight: 700;
-    line-height: 23.44px;
-    background-color: #901C1C ;
-    color: #FFF;
-    width: 170px;
-    height: 69px;
-    border-radius: 5px;
-    padding: 1em;
-    /* mix-blend-mode: */
 }
 
-.portfolio p {
+.dropdown {
+    position: relative;
+    cursor: pointer;
+    margin: 2em;
+}
+
+.dropdown .dropdown-toggle {
+    appearance: none;
+    background: #901C1C;
+    color: #fff;
+    border: 0;
+    padding: 12px 35px 12px 20px;
+    border-radius: 5px;
+    text-align: left;
+    position: relative;
+    width: 170px;
+    height: 64px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown .dropdown-toggle::after {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 17px;
+    background: url(img/select-arrow.svg) center center / 16px 26px no-repeat;
+    width: 40px;
+    height: 50%;
+    transform: rotate(180deg);
+    transition: transform .3s ease-in-out;
+}
+
+.dropdown .dropdown-toggle.active::after {
+    z-index: 80;
+    transform: rotate(360deg);
+    transition: transform .3s ease-in-out;
+}
+
+.dropdown .dropdown-menu {
+    position: absolute;
+    left: 88px;
+    top: 0;
+    transform: translateX(-50%);
+    background: #901C1C;
+    color: white;
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    width: 170px;
+    height: 170px;
+    border-radius: 5px;
+    z-index: 10;
+    visibility: hidden;
+    overflow: auto;
+    max-height: 200px;
+}
+
+.dropdown .dropdown-menu[aria-expanded="true"] {
+    visibility: visible;
+}
+
+.dropdown .dropdown-menu > li {
+    height: 53px;
+    display: block;
+    align-items: center;
+    padding: 16px 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dropdown .dropdown-menu li:nth-child(2) {
+    /* border-width: 70%; */
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    /* padding: 1em; */
+}
+
+.dropdown .dropdown-menu > li:hover,
+.dropdown .dropdown-menu > li:focus {
+    outline: none;
+    background:rgba(0,0,0,0.1);
+}
+
+
+
+
+
+
+
+
+
+
+/* ==== SELECT */
+.photo_foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.photo_foot p {
     font-size: 24px;
     font-weight: 400;
     line-height: 31.25px;
     color: #901C1C;
-    
+    margin-left: 5px;  
+}
+
+.media_likes {
+    display: flex;
+}
+.media_likes button{
+    border: none;
+    background: white;
+    cursor: pointer;
+}
+
+.photo_foot i {
+    font-size: 22px;
+    color: #901C1C;
+}
+.photo_foot i[data-like="true"] {
+    font-size: 30px;
+    color: red;
 }
 
 .portfolio_container {
@@ -343,7 +491,20 @@ nav li {
     width: 350px;
     height: 300px;
     object-fit: cover;
+    border-radius: 5px;
 }
+
+.bloc_counter {
+    position: fixed;
+    border-radius: 5px;
+    bottom: -10px;
+    right: 70px;
+    width: 376px;
+    height: 89px;
+    background: #DB8876;
+}
+
+
 
 /* #endregion */
 
@@ -424,24 +585,6 @@ input {
 /* #endregion */
 
 /* #region modal LIGHTBOX */
-
-
-
-
-/* pour le  TEST affichage image en grille*/
-/* .grid {
-    padding: 16px;
-    display: flex;
-    flex-wrap: wrap;
-}
-.grid img {
-    margin: 1em;
-} */
-/* fin pour le  TEST */
-
-
-
-
 
 .lightbox_bground {
     /* display: none; */

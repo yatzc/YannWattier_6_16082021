@@ -20,34 +20,30 @@ if (searchParams.has(`id`)) {
               return identifiant.id == photographeId;
             });
 
-            // onglet
-            const onglet = document.getElementById("onglet");
-            onglet.innerHTML = "Fisheye - " + identity[0].name;
+            // titre onglet (Fisheye - nom photographe)
+            document.getElementById("onglet").innerHTML = "Fisheye - " + identity[0].name;
 
             // name
-            const name = document.getElementById("name");
-            name.innerHTML = identity[0].name;
+            document.getElementById("name").innerHTML = identity[0].name;
             // city + country
-            const place = document.getElementById("place");
-            place.innerHTML = identity[0].city + ", " + identity[0].country;
+            document.getElementById("place").innerHTML = identity[0].city + ", " + identity[0].country;
             // tagline
-            const tagline = document.getElementById("tagline");
-            tagline.innerHTML = identity[0].tagline;
+            document.getElementById("tagline").innerHTML = identity[0].tagline;
             // tags
             function tags(tag) {
               return `
-              <a href="">
+
                 <ul class="tag-list">
-                    ${tag.map(tag => `<li><button class="btn_tag">#${tag}</button></li>`).join("")}
+                    ${tag.map(tag => `<li><a data-dataoftag="${tag}" class="btn_tag">#${tag}</a></li>`).join("")}
                 </ul>
-              </a>
+
               `;
             }
-
-            (function() { document.querySelector("#identity_card_tags").innerHTML = tags(identity[0].tags.sort()); }())
+            document.querySelector("#identity_card_tags").innerHTML = tags(identity[0].tags.sort());
             // Photo
-            const img = document.querySelector("#photo_photographer");
-            img.src = "./Photos/Photographers_ID_Photos/" + identity[0].portrait;
+            document.querySelector("#photo_photographer").src = "./Photos/Photographers_ID_Photos/" + identity[0].portrait;
+
+
 
             // ============================================ PORTFOLIO
             const photos = data.media.filter(donnees => donnees.photographerId == photographeId);
@@ -57,18 +53,62 @@ if (searchParams.has(`id`)) {
               return `
               <article class="photo_article">
                 <div class="photo_flex">
-                  <a href="./Photos/${photographeId}/${photo.image}">
+                  <a  href="./Photos/${photographeId}/${photo.image}">
                     <img src="./Photos/${photographeId}/${photo.image}">
                   </a>
-                  <p>${photo.title}</p>
+                  <div class="photo_foot">
+                    <p>${photo.title}</p>
+                    <div class="media_likes">
+                      <p class="number_like">${photo.likes}</p>
+                      <button data-like="false" class="btn_heart"><i class="fas fa-heart"></i></button>
+                    </div>
+                  </div>
                 </div>
               </article>
               `;
             }
+            
                     
-            document.getElementById("portfolio_photos").innerHTML = `
-                ${photos.map(photoTemplate).join("")}
-            `;
+            document.getElementById("portfolio_photos").innerHTML = `${photos.map(photoTemplate).join("")}`;
+
+
+            // ============================================ LIKES COUNT
+            const hearts = document.querySelectorAll('.media_likes button');
+
+            // console.log(heart);
+
+            hearts.forEach(heart => {
+              heart.addEventListener('click', choiceLike);
+            })
+            function choiceLike() {
+              this.dataset.like = this.dataset.like == "true" ? "false" : "true";
+              calculateLikes();
+            }
+
+            function calculateLikes() {
+              const numberLike = document.querySelectorAll('.media_likes button[data-like="true"').length;
+              document.querySelector(".count").innerHTML = numberLike  + totalLikesJSON;
+            }
+
+            // nombre total de likes du photographe via JSON
+            let totalLikesJSON = 0;
+
+            for(let i = 0; i < photos.length; i++) {
+              // console.log(photos[i].likes);
+              totalLikesJSON += photos[i].likes;
+            }
+            // console.log(totalLikesJSON);
+            document.querySelector(".count").innerHTML = totalLikesJSON;
+            document.querySelector(".price").innerHTML = identity[0].price + "€/jour";
+
+            // const arr = [10, 20, 30];
+            // const reducer = (accumulator, curr) => accumulator + curr;
+            // console.log(arr.reduce(reducer));
+
+
+
+
+
 
             Lightbox.init();        
 
@@ -82,14 +122,6 @@ if (searchParams.has(`id`)) {
 }
 // #endregion
 
-// #region ============ SELECT
-function updated(element) {
-    let idx     = element.selectedIndex;
-    let val     = element.options[idx].value;
-    let content = element.options[idx].innerHTML;
-    alert(val + " " + content);
-}
-// #endregion
 
 // #region ============ DOM ELEMENTS photographer page
 // FORM
@@ -223,20 +255,60 @@ form.addEventListener("submit", function (e) {
 
 // #endregion
 
+// #region ============ TAGS photo style
+const btns = document.querySelectorAll('.btn_tag');
+const storeProducts = document.querySelectorAll('.photo_article');
+
+// for (i = 0; i < btns.length; i++) {
+
+//     btns[i].addEventListener('click', (e) => {
+//         e.preventDefault()
+        
+//         const filter = e.target.dataset.filter;
+//         console.log(filter);
+        
+//         storeProducts.forEach((product)=> {
+//             if (filter === 'all'){
+//                 product.style.display = 'block'
+//             } else {
+//                 if (product.classList.contains(filter)){
+//                     product.style.display = 'block'
+//                 } else {
+//                     product.style.display = 'none'
+//                 }
+//             }
+//         });
+//     });
+// };
+
+// // SEARCH FILTER
+// const search = document.getElementById("search");
+// const productName = document.querySelectorAll(".product-details h2");
+
+// // A BETTER WAY TO FILTER THROUGH THE PRODUCTS
+// search.addEventListener("keyup", filterProducts);
+
+
+// function filterProducts(e) {
+//     const text = e.target.value.toLowerCase();
+//     // console.log(productName[0]);
+//     productName.forEach(function(product) {
+//         const item = product.firstChild.textContent;
+//         if (item.toLowerCase().indexOf(text) != -1) {
+//             product.parentElement.parentElement.style.display = "block"
+//         } else {
+//             product.parentElement.parentElement.style.display = "none"
+//         }
+//     })
+// }
+
+
+
+
+// #endregion
+
+
 // #region ============ LIGHTBOX
-
-// // open lightbox (btn)
-// lightboxBtnOpen.forEach((btn) => btn.addEventListener("click", openBtnLightbox));
-// function openBtnLightbox(e) {
-//   lightboxBg.style.display = "block";
-// }
-
-// // close lightbox (cross)
-// lightboxCrossClose.forEach((btn) => btn.addEventListener("click", closeBtnLightbox));
-// function closeBtnLightbox() {
-//   lightboxBg.style.display = "none";
-// }
-
 
 /**
  * @param {HTMLElement} element
@@ -357,7 +429,118 @@ class Lightbox {
 }
 // #endregion
 
+// #region ============ SELECT
+// function updated(element) {
+//   let idx     = element.selectedIndex;
+//   let val     = element.options[idx].value;
+//   let content = element.options[idx].innerHTML;
+//   alert(val + " " + content);
+// }
+
+function DropDown(dropDown) {
+  const [toggler, menu] = dropDown.children;
+  
+  const handleClickOut = e => {
+    if(!dropDown) {
+      return document.removeEventListener('click', handleClickOut);
+    }
+    if(!dropDown.contains(e.target)) {
+      this.toggle(false);
+    }
+  };
+  
+  const setValue = (item) => {
+    const val = item.textContent;
+    toggler.textContent = val;
+    this.value = val;
+    this.toggle(false);
+    dropDown.dispatchEvent(new Event('change'));
+    toggler.focus();
+  }
+  
+  const handleItemKeyDown = (e) => {
+    e.preventDefault();
+
+    if(e.keyCode === 38 && e.target.previousElementSibling) { // up
+      e.target.previousElementSibling.focus();
+    } else if(e.keyCode === 40 && e.target.nextElementSibling) { // down
+      e.target.nextElementSibling.focus();
+    } else if(e.keyCode === 27) { // escape key
+      this.toggle(false);
+    } else if(e.keyCode === 13 || e.keyCode === 32) { // enter or spacebar key
+      setValue(e.target);
+    }
+  }
+
+  const handleToggleKeyPress = (e) => {
+    e.preventDefault();
+
+    if(e.keyCode === 27) { // escape key
+      this.toggle(false);
+    } else if(e.keyCode === 13 || e.keyCode === 32) { // enter or spacebar key
+      this.toggle(true);
+    }
+  }
+  
+  toggler.addEventListener('keydown', handleToggleKeyPress);
+  toggler.addEventListener('click', () => this.toggle());
+  [...menu.children].forEach(item => {
+    item.addEventListener('keydown', handleItemKeyDown);
+    item.addEventListener('click', () => setValue(item));
+  });
+  
+  this.element = dropDown;
+  
+  this.value = toggler.textContent;
+  
+  this.toggle = (expand = null) => {
+    expand = expand === null
+      ? menu.getAttribute('aria-expanded') !== 'true'
+      : expand;
+
+    menu.setAttribute('aria-expanded', expand);
+    
+    if(expand) {
+      toggler.classList.add('active');
+      menu.children[0].focus();
+      document.addEventListener('click', handleClickOut);
+      dropDown.dispatchEvent(new Event('opened'));
+    } else {
+      toggler.classList.remove('active');
+      dropDown.dispatchEvent(new Event('closed'));
+      document.removeEventListener('click', handleClickOut);
+    }
+  }
+}
+
+const dropDown = new DropDown(document.querySelector('.dropdown'));
+  
+dropDown.element.addEventListener('change', e => {
+  console.log('changed', dropDown.value);
+});
+
+dropDown.element.addEventListener('opened', e => {
+  console.log('opened', dropDown.value);
+});
+
+dropDown.element.addEventListener('closed', e => {
+  console.log('closed', dropDown.value);
+});
+
+// dropDown.toggle();
+
+
+
+
+
 // #endregion
+
+// #endregion
+
+
+
+
+
 
 // #region CODE JL
 // const datas = data.photographers.filter(donnees => donnees.id == photographeId);

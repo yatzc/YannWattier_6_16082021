@@ -41,6 +41,17 @@ const fetchSearch = async() => {
 }
 // #endregion
 
+// #region ============ TAGS photo style
+
+
+
+
+
+
+
+
+// #endregion
+
 // #region OBJECT
 // CONSTRUCTEUR
 function Photographer(name, id, city, country, tags, tagline, price, portrait) {
