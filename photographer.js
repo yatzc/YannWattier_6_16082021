@@ -1,6 +1,6 @@
 // #region ======================== PAGE photographer
 
-// #region ============ CARD
+// #region ============ MAIN
 let searchParams = new URLSearchParams(window.location.search);
 
 //test si id est dans url
@@ -79,7 +79,7 @@ if (searchParams.has(`id`)) {
 // #endregion ============ PORTFOLIO
 
 // #region ============ LIKES COUNT
-            // =============== LIKE from add heart
+      // =============== LIKE from add heart
       const hearts = document.querySelectorAll('.media_likes button');
 
       hearts.forEach(heart => {
@@ -88,11 +88,17 @@ if (searchParams.has(`id`)) {
       function choiceLike() {
         this.dataset.like = this.dataset.like == "true" ? "false" : "true";
         calculateLikes();
+        // addOneLikes();
       }
 
       function calculateLikes() {
-        const numberLike = document.querySelectorAll('.media_likes button[data-like="true"').length;
+        const numberLike = document.querySelectorAll('.media_likes button[data-like="true"]').length;
         document.querySelector(".count").innerHTML = numberLike  + totalLikesJSON;
+      }
+
+      function addOneLikes() {
+        const nbLike = document.querySelectorAll('.media_likes button[data-like="true"]').length;
+        // document.querySelector(".number_like").innerHTML = photos[0].likes  + 1;
       }
 
       // =============== LIKE from likes JSON
@@ -102,13 +108,21 @@ if (searchParams.has(`id`)) {
         // console.log(photos[i].likes);
         totalLikesJSON += photos[i].likes;
       }
-      // console.log(totalLikesJSON);
-      document.querySelector(".count").innerHTML = totalLikesJSON + '  <i class="fas fa-heart"></i>';
-      document.querySelector(".price").innerHTML = identity[0].price + "€/jour";
+
 
 // const arr = [10, 20, 30];
 // const reducer = (acc, curr) => acc + curr;
 // console.log(arr.reduce(reducer));
+
+
+      // console.log(totalLikesJSON);
+      document.querySelector(".count").innerHTML = totalLikesJSON;
+      document.querySelector(".price").innerHTML = identity[0].price + "€/jour";
+
+
+      // Add one like to photo
+
+
 
 // #endregion ============ LIKES COUNT            
 
