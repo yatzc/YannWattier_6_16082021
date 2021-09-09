@@ -28,7 +28,13 @@
                         <h1 id="name"></h1>
                         <h2 id="place"></h2>
                         <p id="tagline"></p>
-                        <nav id="identity_card_tags">BTN KO</nav>
+
+
+                        <div class="filter-box">
+                            <!-- <nav id="identity_card_tags">BTN KO</nav> -->
+                        </div>
+
+
                     </div>
                     <button class="btn_contact">Contactez-moi</button>
                 </div>
@@ -37,25 +43,28 @@
 
             <!-- ========================== Portfolio -->
             <section class="portfolio">
-                <div class="dropdown">
-                    <button class="dropdown-toggle" type="button" aria-haspopup="true">
-                      Select :
-                    </button>
-                    <ul class="dropdown-menu" role="listbox" aria-expanded="false">
-                      <li role="option" tabindex="0">Popularité</li>
-                      <li role="option" tabindex="0">Date</li>
-                      <li role="option" tabindex="0">Titre</li>
-                    </ul>
-                </div>
 
+                <div class="portfolio_select">
+                    <label>Trier par</label>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle" type="button" aria-haspopup="true">
+                          Select :
+                        </button>
+                        <ul class="dropdown-menu" role="listbox" aria-expanded="false">
+                          <li role="option" tabindex="0">Popularité</li>
+                          <li role="option" tabindex="0">Date</li>
+                          <li role="option" tabindex="0">Titre</li>
+                        </ul>
+                    </div>
+                </div>
                 <!-- ========================== modal Lightbox -->
                 <div id="portfolio_photos" class="portfolio_container"></div>
 
             </section>
 
             <div class="bloc_counter">
-                <div class="count">0</div>
-                <div class="price"></div>
+                <p class="count">0</p>
+                <p class="price"></p>
             </div>
 
             <!-- ========================== modal FORM -->
@@ -94,6 +103,7 @@
 
         </section>
     </main>
+    <footer></footer>
     
 </body>
 </html>

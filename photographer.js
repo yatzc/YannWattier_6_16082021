@@ -7,123 +7,161 @@ let searchParams = new URLSearchParams(window.location.search);
 // console.log(searchParams.has(`id`));
 
 if (searchParams.has(`id`)) {
-    // code à effectuer
-    let photographeId = searchParams.get(`id`);
-    // console.log(photographeId);
+  // code à effectuer
+  let photographeId = searchParams.get(`id`);
+  // console.log(photographeId);
 
 
-    // APPEL PHOTOGATHER JSON
-    fetch('./FishEyeData.json').then(response => { return response.json(); })
-        .then(data => {
+  // APPEL PHOTOGATHER JSON
+  fetch('./FishEyeData.json').then(response => { return response.json(); })
+    .then(data => {
 
-            const identity = data.photographers.filter( function(identifiant){
-              return identifiant.id == photographeId;
-            });
+// #region ============ identifiant du photographe
+      const identity = data.photographers.filter( function(identifiant){
+        return identifiant.id == photographeId;
+      });
 
-            // titre onglet (Fisheye - nom photographe)
-            document.getElementById("onglet").innerHTML = "Fisheye - " + identity[0].name;
+      // titre onglet (Fisheye - nom photographe)
+      document.getElementById("onglet").innerHTML = "Fisheye - " + identity[0].name;
 
-            // name
-            document.getElementById("name").innerHTML = identity[0].name;
-            // city + country
-            document.getElementById("place").innerHTML = identity[0].city + ", " + identity[0].country;
-            // tagline
-            document.getElementById("tagline").innerHTML = identity[0].tagline;
-            // tags
-            function tags(tag) {
-              return `
+      // name
+      document.getElementById("name").innerHTML = identity[0].name;
+      // city + country
+      document.getElementById("place").innerHTML = identity[0].city + ", " + identity[0].country;
+      // tagline
+      document.getElementById("tagline").innerHTML = identity[0].tagline;
+      // tags
+      function tags(tag) {
+        return `
+          ${tag.map(tag => `<a href="#" class="btn_tag" data-filter="${tag}" >#${tag}</a>`).join("")}
+        `;
+      }
+      document.querySelector(".filter-box").innerHTML = tags(identity[0].tags.sort());
+      // Photo
+      document.querySelector("#photo_photographer").src = "./Photos/Photographers_ID_Photos/" + identity[0].portrait;
+// #endregion ============ identifiant du photographe
 
-                <ul class="tag-list">
-                    ${tag.map(tag => `<li><a data-dataoftag="${tag}" class="btn_tag">#${tag}</a></li>`).join("")}
-                </ul>
-
-              `;
-            }
-            document.querySelector("#identity_card_tags").innerHTML = tags(identity[0].tags.sort());
-            // Photo
-            document.querySelector("#photo_photographer").src = "./Photos/Photographers_ID_Photos/" + identity[0].portrait;
-
-
-
-            // ============================================ PORTFOLIO
+// #region ============ PORTFOLIO
+            // media du photographe
             const photos = data.media.filter(donnees => donnees.photographerId == photographeId);
 // console.table(photos);
 
-            function photoTemplate(photo) {
-              return `
-              <article class="photo_article">
-                <div class="photo_flex">
-                  <a  href="./Photos/${photographeId}/${photo.image}">
-                    <img src="./Photos/${photographeId}/${photo.image}">
-                  </a>
-                  <div class="photo_foot">
-                    <p>${photo.title}</p>
-                    <div class="media_likes">
-                      <p class="number_like">${photo.likes}</p>
-                      <button data-like="false" class="btn_heart"><i class="fas fa-heart"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </article>
-              `;
-            }
-            
-                    
-            document.getElementById("portfolio_photos").innerHTML = `${photos.map(photoTemplate).join("")}`;
+    // if(dropDown.value == "") {
+    //   photos.sort((a, b) => a.title - b.title);
+    // } else if(dropDown.value == "Popularité") {
+    //   photos.sort((a, b) => a.likes - b.likes);
+    // } else if(dropDown.value == "Titre") {
+    //   photos.sort((a, b) => a.title - b.title);
+    // } else if(dropDown.value == "Date") {
+    //   photos.sort((a, b) => a.date - b.date);
+    // }
 
+      function photoTemplate(photo) {
+        return `
+        <article class="photo_article ${photo.tags}">
+          <div class="photo_flex">
+            <a  href="./Photos/${photographeId}/${photo.image}">
+              <img src="./Photos/${photographeId}/small/${photo.image}">
+            </a>
+            <div class="photo_foot">
+              <p class="overflow_ellipsis">${photo.title}</p>
+              <div class="media_likes">
+                <p class="number_like">${photo.likes}</p>
+                <button data-like="false" class="btn_heart"><i class="fas fa-heart"></i></button>
+              </div>
+            </div>
+          </div>
+        </article>
+        `;
+      }
+              
+      document.getElementById("portfolio_photos").innerHTML = `${photos.map(photoTemplate).join("")}`;
+// #endregion ============ PORTFOLIO
 
-            // ============================================ LIKES COUNT
-            const hearts = document.querySelectorAll('.media_likes button');
+// #region ============ LIKES COUNT
+            // =============== LIKE from add heart
+      const hearts = document.querySelectorAll('.media_likes button');
 
-            // console.log(heart);
+      hearts.forEach(heart => {
+        heart.addEventListener('click', choiceLike);
+      })
+      function choiceLike() {
+        this.dataset.like = this.dataset.like == "true" ? "false" : "true";
+        calculateLikes();
+      }
 
-            hearts.forEach(heart => {
-              heart.addEventListener('click', choiceLike);
-            })
-            function choiceLike() {
-              this.dataset.like = this.dataset.like == "true" ? "false" : "true";
-              calculateLikes();
-            }
+      function calculateLikes() {
+        const numberLike = document.querySelectorAll('.media_likes button[data-like="true"').length;
+        document.querySelector(".count").innerHTML = numberLike  + totalLikesJSON;
+      }
 
-            function calculateLikes() {
-              const numberLike = document.querySelectorAll('.media_likes button[data-like="true"').length;
-              document.querySelector(".count").innerHTML = numberLike  + totalLikesJSON;
-            }
+      // =============== LIKE from likes JSON
+      let totalLikesJSON = 0;
 
-            // nombre total de likes du photographe via JSON
-            let totalLikesJSON = 0;
+      for(let i = 0; i < photos.length; i++) {
+        // console.log(photos[i].likes);
+        totalLikesJSON += photos[i].likes;
+      }
+      // console.log(totalLikesJSON);
+      document.querySelector(".count").innerHTML = totalLikesJSON + '  <i class="fas fa-heart"></i>';
+      document.querySelector(".price").innerHTML = identity[0].price + "€/jour";
 
-            for(let i = 0; i < photos.length; i++) {
-              // console.log(photos[i].likes);
-              totalLikesJSON += photos[i].likes;
-            }
-            // console.log(totalLikesJSON);
-            document.querySelector(".count").innerHTML = totalLikesJSON;
-            document.querySelector(".price").innerHTML = identity[0].price + "€/jour";
+// const arr = [10, 20, 30];
+// const reducer = (acc, curr) => acc + curr;
+// console.log(arr.reduce(reducer));
 
-            // const arr = [10, 20, 30];
-            // const reducer = (accumulator, curr) => accumulator + curr;
-            // console.log(arr.reduce(reducer));
+// #endregion ============ LIKES COUNT            
 
+// #region ============ Le tri par SELECT
+    // lesLike = array data du photographe trié par like
+      const lesLike = photos.sort((a, b) => a.likes - b.likes)
+      
+      console.log(lesLike);
+// #endregion ============ Le tri par SELECT
 
+// #region ============ TAGS photo style
 
+      const btns = document.querySelectorAll('.btn_tag');
+      const storePhoto = document.querySelectorAll('.photo_article');
 
+      for (let i = 0; i < btns.length; i++) {
 
+          btns[i].addEventListener('click', (e) => {
+              e.preventDefault();
+              
+              const filter = e.target.dataset.filter;
+              // console.log(filter);
+              
+              storePhoto.forEach((product)=> {
+                  if (!filter){
+                      product.style.display = 'block';
+                  } else {
+                      if (product.classList.contains(filter)){
+                          product.style.display = 'block';
+                      } else {
+                          product.style.display = 'none';
+                      }
+                  }
+              });
+          });
+      };
 
-            Lightbox.init();        
+// #endregion
+
+      Lightbox.init();        
 
     }).catch(err => {
         // Do something for an error here
     });
 
 } else {
-    // proposition redirection vers index.html
+    // Si id photographer KO : redirection vers index.html
     window.location.pathname = `index.html`;
 }
 // #endregion
 
 
-// #region ============ DOM ELEMENTS photographer page
+// #region ============ DOM ELEMENTS FORM + lightbox
 // FORM
 const formBtnOpen    = document.querySelectorAll(".btn_contact");
 const formBg         = document.querySelector(".bground");
@@ -255,59 +293,6 @@ form.addEventListener("submit", function (e) {
 
 // #endregion
 
-// #region ============ TAGS photo style
-const btns = document.querySelectorAll('.btn_tag');
-const storeProducts = document.querySelectorAll('.photo_article');
-
-// for (i = 0; i < btns.length; i++) {
-
-//     btns[i].addEventListener('click', (e) => {
-//         e.preventDefault()
-        
-//         const filter = e.target.dataset.filter;
-//         console.log(filter);
-        
-//         storeProducts.forEach((product)=> {
-//             if (filter === 'all'){
-//                 product.style.display = 'block'
-//             } else {
-//                 if (product.classList.contains(filter)){
-//                     product.style.display = 'block'
-//                 } else {
-//                     product.style.display = 'none'
-//                 }
-//             }
-//         });
-//     });
-// };
-
-// // SEARCH FILTER
-// const search = document.getElementById("search");
-// const productName = document.querySelectorAll(".product-details h2");
-
-// // A BETTER WAY TO FILTER THROUGH THE PRODUCTS
-// search.addEventListener("keyup", filterProducts);
-
-
-// function filterProducts(e) {
-//     const text = e.target.value.toLowerCase();
-//     // console.log(productName[0]);
-//     productName.forEach(function(product) {
-//         const item = product.firstChild.textContent;
-//         if (item.toLowerCase().indexOf(text) != -1) {
-//             product.parentElement.parentElement.style.display = "block"
-//         } else {
-//             product.parentElement.parentElement.style.display = "none"
-//         }
-//     })
-// }
-
-
-
-
-// #endregion
-
-
 // #region ============ LIGHTBOX
 
 /**
@@ -430,12 +415,6 @@ class Lightbox {
 // #endregion
 
 // #region ============ SELECT
-// function updated(element) {
-//   let idx     = element.selectedIndex;
-//   let val     = element.options[idx].value;
-//   let content = element.options[idx].innerHTML;
-//   alert(val + " " + content);
-// }
 
 function DropDown(dropDown) {
   const [toggler, menu] = dropDown.children;
@@ -519,6 +498,20 @@ dropDown.element.addEventListener('change', e => {
   console.log('changed', dropDown.value);
 });
 
+
+dropDown.element.addEventListener('change', e => {
+  if(dropDown.value == "") {
+    photos.sort((a, b) => a.title - b.title);
+  } else if(dropDown.value == "Popularité") {
+    photos.sort((a, b) => a.likes - b.likes);
+  } else if(dropDown.value == "Titre") {
+    photos.sort((a, b) => a.title - b.title);
+  } else if(dropDown.value == "Date") {
+    photos.sort((a, b) => a.date - b.date);
+  }
+});
+
+
 dropDown.element.addEventListener('opened', e => {
   console.log('opened', dropDown.value);
 });
@@ -526,6 +519,8 @@ dropDown.element.addEventListener('opened', e => {
 dropDown.element.addEventListener('closed', e => {
   console.log('closed', dropDown.value);
 });
+
+
 
 // dropDown.toggle();
 
@@ -536,9 +531,6 @@ dropDown.element.addEventListener('closed', e => {
 // #endregion
 
 // #endregion
-
-
-
 
 
 

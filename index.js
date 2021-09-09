@@ -1,8 +1,7 @@
 // #region PAGE index
 // APPEL PHOTOGATHER JSON
 const fetchSearch = async() => {
-    photographer_card = await fetch(
-        './FishEyeData.json')
+    photographer_card = await fetch('./FishEyeData.json')
         .then(response => { return response.json(); })
         .then(data => {
 
@@ -26,7 +25,7 @@ const fetchSearch = async() => {
                 <h3>${photographer.city}, ${photographer.country}</h3>
                 <p>${photographer.tagline}</p>
                 <h4>${photographer.price}€/jour</h4>
-                <nav aria-label="Photographe navigation" role="search">
+                <nav aria-label="filtre hotographe" role="search">
                     ${photographer.tags ? tags(photographer.tags) : ""}
                 </nav>
             </article>
@@ -37,15 +36,71 @@ const fetchSearch = async() => {
             ${data.photographers.map(photographerTemplate).join("")}        
         `;
 
+
+
+
+
+
+
+
+
+
+
+        // ======================================================= Affichage des tags
+        for(i = 0 ; i < data.photographers.length ; i++) {
+            // console.log(data.photographers[i].tags);
+        } 
+
+        let allTags = 
+            data.photographers[0].tags.concat(
+            data.photographers[1].tags,
+            data.photographers[2].tags,
+            data.photographers[3].tags,
+            data.photographers[4].tags,
+            data.photographers[5].tags
+        );
+        // console.log(allTags);
+
+        let uniqueTags = [...new Set(allTags)];
+        // console.log(uniqueTags);
+
+        function tags(tag) {
+            return `
+              <ul class="tag-list">
+                  ${tag.map(tag => `<li><a data-dataoftag="${tag}" class="btn_tag">#${tag}</a></li>`).join("")}
+              </ul>
+            `;
+        }
+        document.querySelector("#main_nav").innerHTML = tags(uniqueTags);
+
+
+
+
+
         })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 // #endregion
 
 // #region ============ TAGS photo style
-
-
-
-
 
 
 
@@ -67,20 +122,32 @@ function Photographer(name, id, city, country, tags, tagline, price, portrait) {
 // OBJET
 let newPhotographer = new Photographer("toto", 10, "Albi", "France", ["art", "fashion", "events"], "Voir le beau", 100, "MimiKeel.jpg");
 
-console.log(newPhotographer);
+// console.log(newPhotographer);
 
-
-// fetch('./FishEyeData.json', {
-// 	method: "POST",
-// 	headers: { 
-// 		'Accept': 'application/json', 
-// 		'Content-Type': 'application/json' 
-// 	},
-// 	body: JSON.stringify(jsonBody)
-// });
 
 
 // #endregion
+
+// #region scroll action
+const openBlocPass = document.querySelector(".btn_backTop");
+
+window.addEventListener('scroll', () => {
+    // destructuring : ici "scrollTop" == position du scroll vertical
+    const {scrollTop} = document.documentElement;
+    console.log(scrollTop);
+
+    if(scrollTop >= 300) {
+        //changer "display:none;" par "display:block;" à btn_backTop
+        openBlocPass.style.display = "block";
+
+    } else if(scrollTop <= 300) {
+        //changer "display:block;" par "display:none;" à btn_backTop
+        openBlocPass.style.display = "none";
+    }
+})
+// #endregion scroll action
+
+
 
 
 fetchSearch();
