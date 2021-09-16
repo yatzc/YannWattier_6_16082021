@@ -11,26 +11,36 @@
     <title>Fisheye</title>
 </head>
 <body>
+    <!-- skip navigation -->
+    <ul class="skip-links">
+        <li><a href="#logo">       Sauter vers le logo</a></li>
+        <li><a href="#titre">      Sauter vers le titre</a></li>
+        <li><a href="#main_nav">   Sauter vers tri photo par style</a></li>
+        <li><a href="#articles">   Sauter vers les photographes</a></li>
+        <li><a href="#index.html"> Retour vers page accueil</a></li>
+    </ul>
     <!-- ================================== HEADER -->
     <header role="banner">
         <!-- 1 - interactif -->
         <a href="#" class="btn_backTop">Passer au contenu</a>
         <!-- 2 - logo -->
-        <img src="./img/FishEyeLogo.svg" alt="Fisheye Home page" role="img" />
+        <a href="index.html" aria-label="lien vers page accueil">
+            <img src="./img/FishEyeLogo.svg" alt="logo fisheye" id="logo" role="img" />
+        </a>
         <!-- 3 - tag tris -->
-        <nav id="main_nav" class="main_nav" aria-label="Main navigation" role="search"></nav>
+        <nav id="main_nav" class="main_nav" aria-label="main navigation" role="search"></nav>
 
     </header>
     <!-- ================================== MAIN -->
-    <main>
+    <main role="main">
 
         <!-- 4 - H1 -->
         <div class="bloc_h1">
-            <h1 class="h1_index">Nos photographes</h1>
+            <h1 id="titre" tabindex="0" class="h1_index">Nos photographes</h1>
         </div>
         
 
-        <section id="articles" class="container"></section>
+        <section id="articles" class="article_container"></section>
 
     </main>
     <footer></footer>

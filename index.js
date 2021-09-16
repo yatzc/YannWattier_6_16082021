@@ -5,28 +5,52 @@ const fetchSearch = async() => {
         .then(response => { return response.json(); })
         .then(data => {
 
+// #region ============ GET data média of JSON
+            let mediaId             = [];
+            let mediaPhotographerId = [];
+            let mediaTitle          = [];
+            let mediaImage          = [];
+            let mediaTags           = [];
+            let mediaLikes          = [];
+            let mediaDate           = [];
+            let mediaPrice          = [];
+
+
+            // function getDataPhotographer() {
+                data.photographers.forEach((elt, i) => {
+                    mediaId[i]             = elt.id;
+                    mediaPhotographerId[i] = elt.photographerId;
+                    mediaTitle[i]          = elt.title;
+                    mediaImage[i]          = elt.image;
+                    mediaTags[i]           = elt.tags;
+                    mediaLikes[i]          = elt.likes;
+                    mediaDate[i]           = elt.date;
+                    mediaPrice[i]          = elt.price;
+                });
+            // }
+                
+// #endregion ============ Récupération des média du JSON
+
 // #region ============ Affichage des photographes
             function tags(tag) {
                 return `
                 <ul class="tag-list">
-                    ${tag.map(tag => `<li><button class="btn_tag">#${tag}</button></li>`).join("")}
+                    ${tag.map(tag => `<li><a href="#" class="btn_tag" data-filter="${tag}" >#${tag}</a></li>`).join("")}
                 </ul>
                 `;
             }
 
             function photographerTemplate(photographer) {
                 return `
-                <article class="photographer__article ${photographer.tags.join(" ")}" id="${photographer.id}">
+                <article class="article_photographer ${photographer.tags.join(" ")}" id="${photographer.id}">
                     <a href="photographer.html?id=${photographer.id}">
-                        <div class="foto">
-                            <img class="photo__photographer" src="./Photos/Photographers_ID_Photos/${photographer.portrait}">
-                            <h2>${photographer.name}</h2>
-                        </div>
+                        <img alt="photo de ${photographer.name}" class="photo__photographer" src="./Photos/Photographers_ID_Photos/${photographer.portrait}">
+                        <h2>${photographer.name}</h2>
                     </a>
-                    <h3>${photographer.city}, ${photographer.country}</h3>
-                    <p>${photographer.tagline}</p>
-                    <h4>${photographer.price}€/jour</h4>
-                    <nav aria-label="filtre hotographe" role="search">
+                    <h3 aria-label="localité de ${photographer.name} est ${photographer.city} en ${photographer.country}">${photographer.city}, ${photographer.country}</h3>
+                    <p aria-label="le dicton du photographe est ${photographer.tagline}">${photographer.tagline}</p>
+                    <h4 aria-label="le prix du photographe est de ${photographer.price} euro par jour">${photographer.price}€/jour</h4>
+                    <nav class="card_nav" aria-label="card navigation"  role="search">
                         ${photographer.tags ? tags(photographer.tags) : ""}
                     </nav>
                 </article>
@@ -38,37 +62,27 @@ const fetchSearch = async() => {
             `;
 // #endregion ============ Affichage des photographes
 
-// #region ============ Affichage des tags
-            for(i = 0 ; i < data.photographers.length ; i++) {
-                // console.log(data.photographers[i].tags);
-            } 
+// #region ============ Affichage des main_nav tags
 
-            let allTags = 
-                data.photographers[0].tags.concat(
-                data.photographers[1].tags,
-                data.photographers[2].tags,
-                data.photographers[3].tags,
-                data.photographers[4].tags,
-                data.photographers[5].tags
-            );
-            // console.log(allTags);
-
+            // concat les array des tags en un seul array "allTags"
+            let allTags = mediaTags.flat();
+            // supprime les doublons du array "allTags"
             let uniqueTags = [...new Set(allTags)];
-            // console.log(uniqueTags);
 
-            function tags(tag) {
-                return `
-                <ul class="tag-list">
-                    ${tag.map(tag => `<li><a href="#" class="btn_tag" data-filter="${tag}" >#${tag}</a></li>`).join("")}
-                </ul>
-                `;
-            }
+
+            // function tags(tag) {
+            //     return `
+            //     <ul class="tag-list">
+            //         ${tag.map(tag => `<li><a href="#" class="btn_tag" data-filter="${tag}" >#${tag}</a></li>`).join("")}
+            //     </ul>
+            //     `;
+            // }
             document.querySelector("#main_nav").innerHTML = tags(uniqueTags);
 // #endregion ============  Affichage des tags
 
 // #region ============ TAGS photo style
             const btns = document.querySelectorAll('.btn_tag');
-            const storePhoto = document.querySelectorAll('.photographer__article');
+            const storePhoto = document.querySelectorAll('.article_photographer');
 
             for (let i = 0; i < btns.length; i++) {
 
@@ -92,36 +106,8 @@ const fetchSearch = async() => {
                 });
             };
 // #endregion ============ TAGS photo style
-
-
         })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-// #endregion
-
-// #region ============ TAGS photo style
-
-
-
-
 // #endregion
 
 // #region OBJECT
@@ -165,6 +151,6 @@ window.addEventListener('scroll', () => {
 // #endregion scroll action
 
 
-
+// getDataPhotographer();
 
 fetchSearch();

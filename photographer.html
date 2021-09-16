@@ -9,37 +9,48 @@
     <!-- AWESOME -->
     <script src="https://kit.fontawesome.com/61dc271aba.js" crossorigin="anonymous" defer></script>
     <!-- JS -->
-    <script src="photographer.js" type="module" defer></script>
+    <script src="photographer.js" defer></script>
 
     <title id="onglet">Photographe</title>
 </head>
 <body>
+    <!-- skip navigation -->
+    <ul class="skip-links">
+        <li><a href="#logo_photographer">Sauter vers le logo</a></li>
+        <li><a href="#identity_card">    Sauter vers identitée du photographe</a></li>
+        <li><a href="#btn_contact">      Sauter vers contacter photographe</a></li>
+        <li><a href="#filter-box">       Sauter vers tri photo par style</a></li>
+        <li><a href="#dropdown-toggle">  Sauter vers tri photo par ordre</a></li>
+        <li><a href="#portfolio_photos"> Sauter vers média du photographe</a></li>
+    </ul>
     <!-- =================================================== HEADER -->
     <header role="banner">
-        <img src="./img/FishEyeLogo.svg" alt="Fisheye Home page" role="img" />
+        <a href="index.html" aria-label="lien vers page accueil">
+            <img src="./img/FishEyeLogo.svg" alt="logo fisheye" id="logo_photographer" role="img" />
+        </a>
     </header>
     <!-- =================================================== MAIN -->
-    <main>
+    <main role="main">
         <section class="container_page">
             <!-- ========================== photographer identity -->
             <section id="identity_card" class="identity_card">
                 <div class="identity_card_contact">
                     <div class="identity_card_text">
-                        <h1 id="name"></h1>
-                        <h2 id="place"></h2>
-                        <p id="tagline"></p>
+                        <h1 aria-label="nom du photographe"      id="name"></h1>
+                        <h2 aria-label="localité du photographe" id="place"></h2>
+                        <p  aria-label="dicton du photographe"   id="tagline"></p>
                         <!-- TAGS sort -->
-                        <div class="filter-box"></div>
+                        <div id="filter-box" class="filter-box"></div>
                     </div>
-                    <button class="btn_contact">Contactez-moi</button>
+                    <button id="btn_contact" class="btn_contact">Contactez-moi</button>
                 </div>
                 <img src="" alt="" id="photo_photographer">
             </section>
 
             <!-- ========================== photographer portfolio -->
             <section class="portfolio">
-
-                <div class="portfolio_select">
+                <!-- =========== SELECT -->
+                <div id="portfolio_select" class="portfolio_select">
                     <label>Trier par</label>
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" aria-haspopup="true">
@@ -52,9 +63,6 @@
                         </ul>
                     </div>
                 </div>
-                <!-- ========================== modal Lightbox -->
-                <div id="portfolio_photos" class="portfolio_container"></div>
-
             </section>
 
             <div class="bloc_counter">
@@ -62,35 +70,39 @@
                 <p class="price"></p>
             </div>
 
+            <!-- =========== modal Lightbox -->
+            <section id="portfolio_photos" class="portfolio_container">
+            </section>
+
             <!-- ========================== modal FORM -->
             <section class="bground">
                 <div class="content">
                     <h1>Contacter-moi<!-- Ajouter nom : Mimi Keel --></h1>
                     <span class="close" id="closeform"></span>
                     <div class="modal-body">
-                        <form action="index.html" method="GET" id="recordingForm">
-                        <div class="formData noBr">
-                            <label for="first">Prénom</label>
-                            <input class="text-control" type="text" id="first" name="first" placeholder="Ecrire votre prénom ici" />
-                            <small id="smallFirst"></small>
-                        </div>
-                        <div class="formData noBr">
-                            <label for="last">Nom</label>
-                            <input class="text-control" type="text" id="last" name="last" placeholder="Ecrire votre nom ici" />
-                            <small id="smallLast"></small>
-                        </div>
-                        <div class="formData noBr">
-                            <label for="email">Email</label>
-                            <input class="text-control" type="email" id="email" name="email" placeholder="Ecrire votre email ici" />
-                            <small id="smallEmail"></small>
-                        </div>
-                        <div class="formData noBr">
-                            <label for="email">Votre message</label>
-                            <input class="text-control" type="textarea" id="textarea" name="textarea" placeholder="Ecrire votre message ici" />
-                            <small id="smallEmail"></small>
-                        </div>
-                        <!-- btn validate form -->
-                        <input class="btn-submit" id="btn-goToTks" type="submit" value="Envoyer" />
+                        <form action="index.html" method="GET" id="contactForm">
+                            <div class="formData noBr">
+                                <label for="first">Prénom</label>
+                                <input class="text-control" type="text" id="first" name="first" placeholder="Ecrire votre prénom ici" />
+                                <small id="smallFirst"></small>
+                            </div>
+                            <div class="formData noBr">
+                                <label for="last">Nom</label>
+                                <input class="text-control" type="text" id="last" name="last" placeholder="Ecrire votre nom ici" />
+                                <small id="smallLast"></small>
+                            </div>
+                            <div class="formData noBr">
+                                <label for="email">Email</label>
+                                <input class="text-control" type="email" id="email" name="email" placeholder="Ecrire votre email ici" />
+                                <small id="smallEmail"></small>
+                            </div>
+                            <div class="formData noBr">
+                                <label for="email">Votre message</label>
+                                <input class="text-control" type="textarea" id="textarea" name="textarea" placeholder="Ecrire votre message ici" />
+                                <small id="smallEmail"></small>
+                            </div>
+                            <!-- btn validate form -->
+                            <input class="btn-submit" id="btn-goToTks" type="submit" value="Envoyer" />
                         </form>
                     </div>
                 </div>
