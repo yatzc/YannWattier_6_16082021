@@ -77,13 +77,20 @@ header {
     display: flex;
     margin: 2em 0;
 }
-footer {
-    padding-bottom: 100px;
+
+main {
+    padding-bottom: 60px;
 }
+
 
 @media screen and (max-width: 900px) {
     h1 { font-size: 14px; text-align: center; }
     h3 { font-size: 12px; }
+    body {
+        width: 90%;
+    }
+}
+@media screen and (max-width: 700px) {
     body {
         width: 100%;
     }
@@ -164,13 +171,15 @@ button {
 .btn-submit {
     background: #901C1C;
     color: #FFFFFF;
-    height: 69px;
+    width: 150px;
+    height: 62px;
     border-radius: 5px;
     display: block;
     margin: 2em 0;
     padding: 0 2em;
     cursor: pointer;
     border: 0;
+    font-size: 16px;
 }
 .btn_submit:hover,
 .btn_submit:focus {
@@ -181,10 +190,10 @@ button {
 /*#region CLOSE */
 .close {
     position: absolute;
-    right: 15px;
-    top: 15px;
-    width: 32px;
-    height: 32px;
+    right: 23px;
+    top: 25px;
+    width: 60px;
+    height: 60px;
     opacity: 1;
     cursor: pointer;
     transform: scale(0.7);
@@ -192,10 +201,10 @@ button {
 .close:before,
 .close:after {
     position: absolute;
-    left: 15px;
+    right: 30px;
     content: " ";
-    height: 33px;
-    width: 3px;
+    height: 60px;
+    width: 5px;
     background-color: #fff;
 }
 .close:before {
@@ -213,12 +222,25 @@ button {
         font-size: 18px;
         left: 50%;
         transform: translateX(-50%);
+        margin: 1em auto;
     }
 }
 @media screen and (max-width: 700px) {
     .btn_tag {
         margin: 1px;
         padding: 2px 5px;
+    }
+    .close {
+        right: 18px;
+        top: 18px;
+        width: 30px;
+        height: 30px;
+    }
+    .close:before,
+    .close:after {
+        left: 10px;
+        height: 30px;
+        width: 3px;
     }
 }
 /* #endregion */
@@ -248,10 +270,6 @@ header a {
     justify-content: space-between;
     flex-wrap: wrap;
     margin: 0;
-    /* display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-    grid-auto-rows: minmax(100px, auto); */
 }
 .article_container a {
     text-decoration: none;
@@ -358,11 +376,19 @@ nav li {
 
 /* #region ========== PAGE photographer */
 /* #region ==== main */
+@media screen and (max-width: 900px) {
+    img#logo_photographer {
+        width: 150px;
+        height: 50px;
+        margin: 1em;
+    }
+
+}
 @media screen and (max-width: 700px) {
-    
     img#logo_photographer {
         width: 100px;
         height: 25px;
+        margin: 1em;
     }
 
 }
@@ -422,7 +448,7 @@ nav li {
 @media screen and (max-width: 700px) {
     .identity_card {
         justify-content: none;
-        padding: 0;
+        padding: 1em;
     }
     .identity_card_contact {
         width: 100px;
@@ -444,8 +470,8 @@ nav li {
         line-height: 16.93px;
     }
     .identity_card img {
-        width: 100px;
-        height: 100px;
+        width: 93px;
+        height: 93px;
     }
 }
 /* #endregion == identity */
@@ -551,6 +577,11 @@ button, li {
     outline: none;
     background:rgba(0,0,0,0.1);
 }
+@media screen and (max-width: 900px) {
+    .portfolio_select {
+        margin: 1em;
+    }
+}
 
 /* #endregion ==== SELECT */
 
@@ -571,6 +602,10 @@ button, li {
     margin: 0 1em 0 0;
 }
 
+.photo_article {
+    margin: 2em;
+}
+
 .photo_foot {
     display: flex;
     justify-content: space-between;
@@ -587,8 +622,13 @@ button, li {
     /* overflow: hidden;
     width: 150px; */
 }
-.overflow-ellipsis {
+.media_text {
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+}
+.media_price {
+    margin-right: .5em;
 }
 
 .media_likes {
@@ -604,9 +644,13 @@ button, li {
     font-size: 22px;
     color: #901C1C;
 }
-.photo_foot i[data-like="true"] {
-    font-size: 30px;
-    color: red;
+.photo_foot i:focus,
+.photo_foot i:checked,
+.photo_foot i:hover {
+    color: #DB8876;
+}
+.fa-heart:focus {
+    color: #DB8876;
 }
 
 .portfolio_container {
@@ -617,14 +661,17 @@ button, li {
 
 .photo_article {
     margin-top: 2em;
+    width: 350px;
 }
 
+.photo_article video,
 .photo_article img {
     width: 350px;
     height: 300px;
     object-fit: cover;
     border-radius: 5px;
 }
+
 
 /* counter */
 .bloc_counter {
@@ -668,12 +715,18 @@ button, li {
     .bloc_counter {
         display: none;
     }
+    .photo_article {
+        margin: 2em auto;
+    }
 }
 @media screen and (max-width: 800px) {
+    .photo_article {
+        padding: 0 1em;
+    }
+    .photo_article video,
     .photo_article img {
         width: 100%;
         height: 190px;
-        
     }
     .portfolio_select {
         display: none;
@@ -698,11 +751,20 @@ button, li {
     height: 100%;
     width: 100%;
     overflow: auto;
-    /* background-color: rgba(26, 39, 156, 0.4); */
+    /* background-color: white; */
 }
+.bground h1 {
+    font-size: 50px;
+    font-weight: 400;
+    color: black;
+    text-align: left;
+    margin: .3em 0 0 .8em;
+    line-height: 120%;
+}
+
 .content {
     margin: 5% auto;
-    margin-top: 4em;
+    margin-top: 0;
     width: 100%;
     max-width: 500px;
     animation-name: modalopen;
@@ -713,17 +775,18 @@ button, li {
     position: relative;
     color: #fff;
     padding-top: 10px;
+    
+    box-shadow: -6px 7px 14px -3px rgba(0,0,0,0.29);
 }
 .modal-body {
-    padding: 15px 8%;
-    margin: 15px auto;
+    padding: 15px 8% 0 8%;
 }
-label {
+.bground label {
     font-family: "DM Sans", Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    font-weight: normal;
+    font-size: 33px;
+    font-weight: 400;
     display: inline-block;
-    margin: 13px 0 11px 0;
+    margin: 2px 0 0 0;
 }
 input {
     padding: 8px;
@@ -749,7 +812,7 @@ input {
 
 /* message error */
 .formData small {
-    font-size: 10px;
+    font-size: 16px;
  }
 .text-success {
     color: green;
@@ -762,6 +825,30 @@ input {
 .noBr {
     display: block;
 }
+
+.bground textarea {
+    border: none;
+    resize : none;
+    height: 184px;
+}
+
+@media screen and (max-width: 700px) {
+    
+    .bground h1 {
+        font-size: 36px;
+        margin-left: .7em;
+    }
+    .bground label {
+        font-size: 24px;
+    }
+    .bground .btn-submit {
+        margin: 2em auto;
+        height: 35px;
+    }
+    
+
+}
+
 /* #endregion */
 
 /* #region ==== modal LIGHTBOX */
@@ -786,7 +873,7 @@ input {
 .lightbox_next,
 .lightbox_prev {
     border: none;
-    background: url(img/arrow.svg) center center / 30px 48px no-repeat;
+    background: url(./img/arrow.svg) center center / 30px 48px no-repeat;
     width: 30px;
     height: 100%;
     position: fixed;
@@ -803,6 +890,9 @@ input {
 .lightbox_prev:hover {
     opacity: 1;
 }
+svg:hover {
+    fill: red;
+}
 .lightbox_prev {
     right: auto;
     left: 50px;
@@ -811,7 +901,7 @@ input {
 
 .lightbox_close {
     border: none;
-    background: url(img/cross.svg) center center / 48px 48px;
+    background: url(./img/cross.svg) center center / 48px 48px;
     position: fixed;
     top: 60px;
     right: 50px;

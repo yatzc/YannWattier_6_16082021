@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link href="styles.css" rel="stylesheet" type="text/css" media="all">
+    <link href="./styles.css" rel="stylesheet" type="text/css" media="all">
     <link rel="SHORTCUT ICON" href="http://yann.wattier.free.fr/Block.ico" />
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- JS -->
-    <script src="index.js" defer></script>
+    <script type="module" src="./JS/index.js" defer></script>
     <title>Fisheye</title>
 </head>
 <body>
@@ -28,7 +28,7 @@
             <img src="./img/FishEyeLogo.svg" alt="logo fisheye" id="logo" role="img" />
         </a>
         <!-- 3 - tag tris -->
-        <nav id="main_nav" class="main_nav" aria-label="main navigation" role="search"></nav>
+        <nav role="menu" id="main_nav" class="main_nav" aria-label="navigation principale" role="search"></nav>
 
     </header>
     <!-- ================================== MAIN -->
@@ -40,11 +40,8 @@
         </div>
         
 
-        <section id="articles" class="article_container"></section>
+        <section role="menu" id="articles" class="article_container"></section>
 
     </main>
-    <footer></footer>
-
-    <!-- <script src="FishEyeData.json"></script> -->
 </body>
 </html>

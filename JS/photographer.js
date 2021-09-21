@@ -5,15 +5,18 @@ let searchParams = new URLSearchParams(window.location.search);
 
 //test si id est dans url
 // console.log(searchParams.has(`id`));
-
 if (searchParams.has(`id`)) {
   // code à effectuer
   let photographeId = searchParams.get(`id`);
   // console.log(photographeId);
 
+  // garder l'id lors de la validation du formulaire
+  // document.getElementById("id").innerHTML = photographeId;
+  document.querySelector("#id").value = photographeId;
+
 
   // APPEL PHOTOGATHER JSON
-  fetch('./FishEyeData.json').then(response => { return response.json(); })
+  fetch('./data/FishEyeData.json').then(response => { return response.json(); })
     .then(data => {
 
 // #region ============ identifiant du photographe
@@ -23,6 +26,9 @@ if (searchParams.has(`id`)) {
 
       // titre onglet (Fisheye - nom photographe)
       document.getElementById("onglet").innerHTML = "Fisheye - " + identity[0].name;
+      
+      // form contact name
+      document.querySelector(".bground h1").innerHTML = "Contacter-moi " + identity[0].name;
 
       // name
       document.getElementById("name").innerHTML = identity[0].name;
@@ -33,7 +39,7 @@ if (searchParams.has(`id`)) {
       // tags
       function tags(tag) {
         return `
-          ${tag.map(tag => `<a href="#" class="btn_tag" data-filter="${tag}" >#${tag}</a>`).join("")}
+          ${tag.map(tag => `<a aria-label="Trier par ${tag}" role="menuitem" href="#" class="btn_tag" data-filter="${tag}" >#${tag}</a>`).join("")}
         `;
       }
       document.querySelector(".filter-box").innerHTML = tags(identity[0].tags.sort());
@@ -71,13 +77,13 @@ function DropDown(dropDown) {
   const handleItemKeyDown = (e) => {
     e.preventDefault();
 
-    if(e.keyCode === 38 && e.target.previousElementSibling) { // up
+    if(e.keyCode === 38 && e.target.previousElementSibling) {
       e.target.previousElementSibling.focus();
-    } else if(e.keyCode === 40 && e.target.nextElementSibling) { // down
+    } else if(e.keyCode === 40 && e.target.nextElementSibling) {
       e.target.nextElementSibling.focus();
-    } else if(e.keyCode === 27) { // escape key
+    } else if(e.keyCode === 27) {
       this.toggle(false);
-    } else if(e.keyCode === 13 || e.keyCode === 32) { // enter or spacebar key
+    } else if(e.keyCode === 13 || e.keyCode === 32) {
       setValue(e.target);
     }
   }
@@ -85,9 +91,9 @@ function DropDown(dropDown) {
   const handleToggleKeyPress = (e) => {
     e.preventDefault();
 
-    if(e.keyCode === 27) { // escape key
+    if(e.keyCode === 27) {
       this.toggle(false);
-    } else if(e.keyCode === 13 || e.keyCode === 32) { // enter or spacebar key
+    } else if(e.keyCode === 13 || e.keyCode === 32) {
       this.toggle(true);
     }
   }
@@ -164,16 +170,16 @@ dropDown.element.addEventListener('closed', e => {
 
 // #endregion ============ Le tri par SELECT
 
-
+// #region ============ Affichage photo card
       function photoTemplate(photo) {
         return `
+
         <article class="photo_article ${photo.tags}">
           <div class="photo_flex">
-            <a  href="./Photos/${photographeId}/${photo.image}">
-              <img alt="" aria-labelledby="overflow_ellipsis" role="button" src="./Photos/${photographeId}/small/${photo.image}">
-            </a>
+            ${choix_media(photo)}
             <div class="photo_foot">
-              <p class="overflow_ellipsis">${photo.title}</p>
+              <p class="media_text">${photo.title}</p>
+              <p class="media_price">${photo.price}€</p>
               <div class="media_likes">
                 <p data-datanblike="0" data-id="${photo.id}" class="number_like" >${photo.likes}</p>
                 <button data-like="false" data-id="${photo.id}" class="btn_heart"><i class="fas fa-heart"></i></button>
@@ -183,8 +189,25 @@ dropDown.element.addEventListener('closed', e => {
         </article>
         `;
       }
+      // Fonction qui affiche soit video ou soit photo en fonction du media json
+      function choix_media(photo) {
+        if (photo.image) { 
+          return (`<a href="./Photos/${photographeId}/${photo.image}"><img role="img" alt="${photo.description}" role="button" src="./Photos/${photographeId}/small/${photo.image}"></a>`); }
+        else if (photo.video) {
+          let file = photo.video;
+          file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
+          console.log(file)
+          return (`<a href="./Photos/${photographeId}/${photo.video}"><img role="img" alt="${photo.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
+      }
+
+
+// <video controls class="media"><source src="./Photos/${photographeId}/${photo.video}" type=video/mp4></video>
+
+
               
       document.getElementById("portfolio_photos").innerHTML = `${photos.map(photoTemplate).join("")}`;
+// #endregion ============ Affichage photo card
+
 // #endregion ============ PORTFOLIO
 
 // #region ============ LIKES COUNT
@@ -209,7 +232,6 @@ dropDown.element.addEventListener('closed', e => {
         document.querySelector('.media_likes p[data-id="'+this.dataset.id+'"]').innerHTML = numberLikePhoto;
 
         calculateLikes();
-        addOneLike();
       }
 
       function calculateLikes() {
@@ -224,13 +246,6 @@ dropDown.element.addEventListener('closed', e => {
         // console.log(photos[i].likes);
         totalLikesJSON += photos[i].likes;
       }
-
-
-
-// const arr = [10, 20, 30];
-// const reducer = (acc, curr) => acc + curr;
-// console.log(arr.reduce(reducer));
-
 
       // console.log(totalLikesJSON);
       document.querySelector(".count").innerHTML = totalLikesJSON;
@@ -289,6 +304,7 @@ dropDown.element.addEventListener('closed', e => {
 const formBtnOpen    = document.querySelectorAll(".btn_contact");
 const formBg         = document.querySelector(".bground");
 const formCrossClose = document.querySelectorAll(".close");
+
 // lightbox
 const lightboxBtnOpen    = document.querySelectorAll(".test");
 const lightboxBg         = document.querySelector(".lightbox_bground");
@@ -297,14 +313,21 @@ const lightboxCrossClose = document.querySelectorAll(".lightbox_close");
 
 // #region ============ FORM
 
+
 // open form (btn)
 formBtnOpen.forEach((btn) => btn.addEventListener("click", openBtnForm));
 function openBtnForm(e) {
   formBg.style.display = "block";
   form.reset();
+  // history.pushState({}, "", "photographer.html?id=" + photographeId);
   form.first.style.border = "none";
   form.last.style.border = "none";
   form.email.style.border = "none";
+  form.textarea.style.border = "none";
+  smallFirst.style.display = "none";
+  smallLast.style.display = "none";
+  smallEmail.style.display = "none";
+  smallTextarea.style.display = "none";
 }
 
 // close form (cross)
@@ -388,6 +411,30 @@ const validEmail = function (inputEmail) {
   }
 };
 
+// ========================================== MESSAGE
+form.textarea.addEventListener("change", function () { validMessage(this); });
+
+const validMessage = function (inputTextarea) {
+  let textareaRegExp = new RegExp("^[a-zA-Z]{2,20}$", "g");
+
+  let testTextarea = textareaRegExp.test(inputTextarea.value);
+
+  let small = inputTextarea.nextElementSibling;
+
+  if (testTextarea) {
+    small.style.display = "none";
+    small.classList.remove("text-danger");
+    inputTextarea.style.border = "green solid 2px";
+    return true;
+  } else {
+    small.style.display = "inline-block";
+    small.innerHTML = "Vous devez entrer 2 caractères ou plus.";
+    small.classList.add("text-danger");
+    inputTextarea.style.border = "red solid 2px";
+    return false;
+  }
+};
+
 
 // ========================================== VALIDATION BTN FORM
 // Listen form & close form & open THANKS (btn)
@@ -396,15 +443,30 @@ form.addEventListener("submit", function (e) {
     validFirst(form.first) &&
     validLast(form.last) &&
     validEmail(form.email) &&
-    validBirthdate(form.birthdate)
+    validMessage(form.textarea)
   ) {
     formBg.style.display = "none";
+    
+    let searchParamsForm = new URLSearchParams(window.location.search);
+    console.log(
+      "ID = " +
+      searchParamsForm.get(`id`) +
+      " First = " +
+      searchParamsForm.get(`first`) +
+      " Last = " +
+      searchParamsForm.get(`last`) +
+      " Email = " +
+      searchParamsForm.get(`email`) +
+      " Textarea = " +
+      searchParamsForm.get(`textarea`)
+      );
     e.preventDefault();
   } else {
     formBg.style.display = "block";
     e.preventDefault();
   }
 });
+
 // #endregion ============ FORM
 
 // #endregion
@@ -418,8 +480,9 @@ form.addEventListener("submit", function (e) {
  */
 class Lightbox {
   static init() {
-    const links = Array.from(document.querySelectorAll('a[href$=".jpg"], a[href$="300"]'))
+    const links = Array.from(document.querySelectorAll('a[href$=".jpg"], a[href$=".mp4"]'))
     const gallery = links.map(link => link.getAttribute('href'))
+    // console.table(gallery);
     // debugger
     links.forEach(link => link.addEventListener('click', e => {
         e.preventDefault()
@@ -434,27 +497,42 @@ class Lightbox {
   constructor(url, images) {
     this.element = this.buildDOM(url)
     this.images = images
-    this.loadImage(url)
+    this.loadMedia(url)
     this.onKeyUp = this.onKeyUp.bind(this)
     document.body.appendChild(this.element)
     document.addEventListener('keyup', this.onKeyUp)
   }
+ 
 
-  loadImage(url) {
-    this.url = null
-    const image = new Image();
-    const container = this.element.querySelector('.lightbox_container')
-    const loader = document.createElement('div')
-    loader.classList.add('lightbox_loader')
-    container.innerHTML = ''
-    container.appendChild(loader)
-    image.onload = () => {
-      container.removeChild(loader)
-      container.appendChild(image)
-      this.url = url
+  loadMedia(url) {
+    // console.log(url);
+    const extension = url.split('.').pop();
+    // console.log(url);
+    this.url = null;
+    if(extension == 'jpg') {
+      const image = new Image();
+      image.onload = () => {
+        container.removeChild(loader)
+        container.appendChild(image)
+        this.url = url
+      }
+      image.src = url
     }
-
-    image.src = url
+    else if(extension == 'mp4') {
+      // const video = `<video controls class="media"><source src="${url}" type=video/mp4></video>`;
+      // video.onload = () => {
+      //   container.removeChild(loader)
+      //   container.appendChild(video)
+      //   this.url = url
+      // }
+      // video.src = url
+    }
+    
+    const container = this.element.querySelector('.lightbox_container');
+    const loader = document.createElement('div');
+    loader.classList.add('lightbox_loader');
+    container.innerHTML = '';
+    container.appendChild(loader);
   }
 
 
@@ -493,7 +571,7 @@ class Lightbox {
     if (i === this.images.length - 1) {
         i = -1
     }
-    this.loadImage(this.images[i + 1])
+    this.loadMedia(this.images[i + 1])
   }
 
   /**
@@ -506,7 +584,7 @@ class Lightbox {
     if (i === 0) {
         i = this.images.length
     }
-    this.loadImage(this.images[i + - 1])
+    this.loadMedia(this.images[i + - 1])
   }
 
   /**
@@ -542,18 +620,19 @@ class VideoMedia {
     this.optionOfMedia  = optionOfMedia;
 
     function create(parameter, data) {
-      return new VideoMedia( data[parameter] ?? 1 );
+      return new VideoMedia();
     }
   }
   
 }
 
 class ImageMedia {
-  constructor(optionOfMedia) {
-    this.optionOfMedia  = optionOfMedia;
+  constructor() {
+    this.width  = width;
+    this.height = height;
 
     function create(data) {
-      return new ImageMedia( data[parameter] ?? 1 );
+      return new ImageMedia();
     }
   }
 }
