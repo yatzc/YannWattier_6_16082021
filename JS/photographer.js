@@ -49,163 +49,186 @@ if (searchParams.has(`id`)) {
 
 // #region ============ PORTFOLIO
       // media du photographe
-      const photos = data.media.filter(donnees => donnees.photographerId == photographeId);
+      var theMediasOfPhotographer = data.media.filter(donnees => donnees.photographerId == photographeId);
 
 // #region ============ SELECT
 
-function DropDown(dropDown) {
-  const [toggler, menu] = dropDown.children;
-  
-  const handleClickOut = e => {
-    if(!dropDown) {
-      return document.removeEventListener('click', handleClickOut);
-    }
-    if(!dropDown.contains(e.target)) {
-      this.toggle(false);
-    }
-  };
-  
-  const setValue = (item) => {
-    const val = item.textContent;
-    toggler.textContent = val;
-    this.value = val;
-    this.toggle(false);
-    dropDown.dispatchEvent(new Event('change'));
-    toggler.focus();
-  }
-  
-  const handleItemKeyDown = (e) => {
-    e.preventDefault();
+      function DropDown(dropDown) {
+        const [toggler, menu] = dropDown.children;
+        
+        const handleClickOut = e => {
+          if(!dropDown) {
+            return document.removeEventListener('click', handleClickOut);
+          }
+          if(!dropDown.contains(e.target)) {
+            this.toggle(false);
+          }
+        };
+        
+        const setValue = (item) => {
+          const val = item.textContent;
+          toggler.textContent = val;
+          this.value = val;
+          this.toggle(false);
+          dropDown.dispatchEvent(new Event('change'));
+          toggler.focus();
+        }
+        
+        const handleItemKeyDown = (e) => {
+          e.preventDefault();
 
-    if(e.keyCode === 38 && e.target.previousElementSibling) {
-      e.target.previousElementSibling.focus();
-    } else if(e.keyCode === 40 && e.target.nextElementSibling) {
-      e.target.nextElementSibling.focus();
-    } else if(e.keyCode === 27) {
-      this.toggle(false);
-    } else if(e.keyCode === 13 || e.keyCode === 32) {
-      setValue(e.target);
-    }
-  }
+          if(e.keyCode === 38 && e.target.previousElementSibling) {
+            e.target.previousElementSibling.focus();
+          } else if(e.keyCode === 40 && e.target.nextElementSibling) {
+            e.target.nextElementSibling.focus();
+          } else if(e.keyCode === 27) {
+            this.toggle(false);
+          } else if(e.keyCode === 13 || e.keyCode === 32) {
+            setValue(e.target);
+          }
+        }
 
-  const handleToggleKeyPress = (e) => {
-    e.preventDefault();
+        const handleToggleKeyPress = (e) => {
+          e.preventDefault();
 
-    if(e.keyCode === 27) {
-      this.toggle(false);
-    } else if(e.keyCode === 13 || e.keyCode === 32) {
-      this.toggle(true);
-    }
-  }
-  
-  toggler.addEventListener('keydown', handleToggleKeyPress);
-  toggler.addEventListener('click', () => this.toggle());
-  [...menu.children].forEach(item => {
-    item.addEventListener('keydown', handleItemKeyDown);
-    item.addEventListener('click', () => setValue(item));
-  });
-  
-  this.element = dropDown;
-  
-  this.value = toggler.textContent;
-  
-  this.toggle = (expand = null) => {
-    expand = expand === null
-      ? menu.getAttribute('aria-expanded') !== 'true'
-      : expand;
+          if(e.keyCode === 27) {
+            this.toggle(false);
+          } else if(e.keyCode === 13 || e.keyCode === 32) {
+            this.toggle(true);
+          }
+        }
+        
+        toggler.addEventListener('keydown', handleToggleKeyPress);
+        toggler.addEventListener('click', () => this.toggle());
+        [...menu.children].forEach(item => {
+          item.addEventListener('keydown', handleItemKeyDown);
+          item.addEventListener('click', () => setValue(item));
+        });
+        
+        this.element = dropDown;
+        
+        this.value = toggler.textContent;
+        
+        this.toggle = (expand = null) => {
+          expand = expand === null
+            ? menu.getAttribute('aria-expanded') !== 'true'
+            : expand;
 
-    menu.setAttribute('aria-expanded', expand);
-    
-    if(expand) {
-      toggler.classList.add('active');
-      menu.children[0].focus();
-      document.addEventListener('click', handleClickOut);
-      dropDown.dispatchEvent(new Event('opened'));
-    } else {
-      toggler.classList.remove('active');
-      dropDown.dispatchEvent(new Event('closed'));
-      document.removeEventListener('click', handleClickOut);
-    }
-  }
-}
+          menu.setAttribute('aria-expanded', expand);
+          
+          if(expand) {
+            toggler.classList.add('active');
+            menu.children[0].focus();
+            document.addEventListener('click', handleClickOut);
+            dropDown.dispatchEvent(new Event('opened'));
+          } else {
+            toggler.classList.remove('active');
+            dropDown.dispatchEvent(new Event('closed'));
+            document.removeEventListener('click', handleClickOut);
+          }
+        }
+      }
 
-const dropDown = new DropDown(document.querySelector('.dropdown'));
-  
-dropDown.element.addEventListener('change', e => {
-  console.log('changed', dropDown.value);
-  mediaSort(dropDown.value);
-});
+      var dropDown = new DropDown(document.querySelector('.dropdown'));
+        
+      dropDown.element.addEventListener('change', e => {
+        // console.log('changed', dropDown.value);
+        mediaSort(dropDown.value);
+      });
 
-dropDown.element.addEventListener('opened', e => {
-  console.log('opened', dropDown.value);
-});
+      // dropDown.element.addEventListener('opened', e => {
+      //   console.log('opened', dropDown.value);
+      // });
 
-dropDown.element.addEventListener('closed', e => {
-  console.log('closed', dropDown.value);
-});
+      // dropDown.element.addEventListener('closed', e => {
+      //   console.log('closed', dropDown.value);
+      // });
 
 // dropDown.toggle();
 
 // #endregion ============ SELECT
 
 // #region ============ Le tri par SELECT
+    
+      function mediaSort(styleMedia) {
+        // let articles = "Popularité";
+        // console.table(theMediasOfPhotographer);
+        if (styleMedia == "") { theMediasOfPhotographer = theMediasOfPhotographer; }
+        else if (styleMedia == "Popularité") { theMediasOfPhotographer.sort((a, b) => b.likes - a.likes); }
+        else if (styleMedia == "Date")       { theMediasOfPhotographer.sort((a, b) => new Date(b.date) - new Date(a.date)); }
+        else if (styleMedia == "Titre")      { theMediasOfPhotographer.sort(function (a, b) {
+          if (a.title.toLowerCase() < b.title.toLowerCase()) { return -1; }
+          if (a.title.toLowerCase() > b.title.toLowerCase()) { return  1; } 
+          return  0;
+        })}
+        // console.table(theMediasOfPhotographer);
 
-    function mediaSort(articles) {
-      switch (articles.innerText) {
-        case "Popularité":
-          photos.sort((a, b) => b.likes - a.likes);
-          break;
-        case "Date":
-          photos.sort((a, b) => new Date(b.date) - new Date(a.date));
-          break;
-        case "Titre":
-          photos.sort(function (a, b) {
-            if (a.title.toLowerCase() < b.title.toLowerCase()) { return -1; }
-            if (a.title.toLowerCase() > b.title.toLowerCase()) { return 1; } 
-            else { return 0; }
-          });
-          break;
+// #region ============ Affichage photo card par tri
+        function mediaTemplate(mediaPhotographer) {
+          return `
+          <article class="photo_article ${mediaPhotographer.tags}">
+            <div class="photo_flex">
+              ${toggleMedia(mediaPhotographer)}
+              <div class="photo_foot">
+                <p class="media_text">${mediaPhotographer.title}</p>
+                <p class="media_price">${mediaPhotographer.price}€</p>
+                <div class="media_likes">
+                  <p data-datanblike="0" data-id="${mediaPhotographer.id}" class="number_like" >${mediaPhotographer.likes}</p>
+                  <button data-like="false" data-id="${mediaPhotographer.id}" class="btn_heart"><i class="fas fa-heart"></i></button>
+                </div>
+              </div>
+            </div>
+          </article>
+          `;
+        }
+        // Fonction qui affiche les photos et fait lien avec soit video soit photo en fonction du media json
+        function toggleMedia(isMedia) {
+          if (isMedia.image) { 
+            return (`<a href="./Photos/${photographeId}/${isMedia.image}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${isMedia.image}"></a>`); }
+          else if (isMedia.video) {
+            let file = isMedia.video;
+            file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
+            return (`<a href="./Photos/${photographeId}/${isMedia.video}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
+        }
+                
+        document.getElementById("portfolio_photos").innerHTML = `${theMediasOfPhotographer.map(mediaTemplate).join("")}`;
+
+        Lightbox.init();   
+// #endregion ============ Affichage photo card
+        
       }
-    }
 
 // #endregion ============ Le tri par SELECT
 
 // #region ============ Affichage photo card
-      function photoTemplate(photo) {
+      function mediaTemplate(mediaPhotographer) {
         return `
-
-        <article class="photo_article ${photo.tags}">
+        <article class="photo_article ${mediaPhotographer.tags}">
           <div class="photo_flex">
-            ${choix_media(photo)}
+            ${toggleMedia(mediaPhotographer)}
             <div class="photo_foot">
-              <p class="media_text">${photo.title}</p>
-              <p class="media_price">${photo.price}€</p>
+              <p class="media_text">${mediaPhotographer.title}</p>
+              <p class="media_price">${mediaPhotographer.price}€</p>
               <div class="media_likes">
-                <p data-datanblike="0" data-id="${photo.id}" class="number_like" >${photo.likes}</p>
-                <button data-like="false" data-id="${photo.id}" class="btn_heart"><i class="fas fa-heart"></i></button>
+                <p data-datanblike="0" data-id="${mediaPhotographer.id}" class="number_like" >${mediaPhotographer.likes}</p>
+                <button data-like="false" data-id="${mediaPhotographer.id}" class="btn_heart"><i class="fas fa-heart"></i></button>
               </div>
             </div>
           </div>
         </article>
         `;
       }
-      // Fonction qui affiche soit video ou soit photo en fonction du media json
-      function choix_media(photo) {
-        if (photo.image) { 
-          return (`<a href="./Photos/${photographeId}/${photo.image}"><img role="img" alt="${photo.description}" role="button" src="./Photos/${photographeId}/small/${photo.image}"></a>`); }
-        else if (photo.video) {
-          let file = photo.video;
+      // Fonction qui affiche les photos et fait lien avec soit video soit photo en fonction du media json
+      function toggleMedia(isMedia) {
+        if (isMedia.image) { 
+          return (`<a href="./Photos/${photographeId}/${isMedia.image}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${isMedia.image}"></a>`); }
+        else if (isMedia.video) {
+          let file = isMedia.video;
           file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
-          console.log(file)
-          return (`<a href="./Photos/${photographeId}/${photo.video}"><img role="img" alt="${photo.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
+          return (`<a href="./Photos/${photographeId}/${isMedia.video}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
       }
-
-
-// <video controls class="media"><source src="./Photos/${photographeId}/${photo.video}" type=video/mp4></video>
-
-
               
-      document.getElementById("portfolio_photos").innerHTML = `${photos.map(photoTemplate).join("")}`;
+      document.getElementById("portfolio_photos").innerHTML = `${theMediasOfPhotographer.map(mediaTemplate).join("")}`;
 // #endregion ============ Affichage photo card
 
 // #endregion ============ PORTFOLIO
@@ -242,12 +265,10 @@ dropDown.element.addEventListener('closed', e => {
       // =============== LIKE from likes JSON
       let totalLikesJSON = 0;
 
-      for(let i = 0; i < photos.length; i++) {
-        // console.log(photos[i].likes);
-        totalLikesJSON += photos[i].likes;
+      for(let i = 0; i < theMediasOfPhotographer.length; i++) {
+        totalLikesJSON += theMediasOfPhotographer[i].likes;
       }
 
-      // console.log(totalLikesJSON);
       document.querySelector(".count").innerHTML = totalLikesJSON;
       document.querySelector(".price").innerHTML = identity[0].price + "€/jour";
 
@@ -479,10 +500,11 @@ form.addEventListener("submit", function (e) {
  * @param {string} url image actuel dans la lightbox
  */
 class Lightbox {
+
   static init() {
     const links = Array.from(document.querySelectorAll('a[href$=".jpg"], a[href$=".mp4"]'))
     const gallery = links.map(link => link.getAttribute('href'))
-    // console.table(gallery);
+    console.table(gallery);
     // debugger
     links.forEach(link => link.addEventListener('click', e => {
         e.preventDefault()
@@ -495,46 +517,67 @@ class Lightbox {
    * @param {string[]} images liste des URL des images du diaporama
    */
   constructor(url, images) {
-    this.element = this.buildDOM(url)
-    this.images = images
-    this.loadMedia(url)
-    this.onKeyUp = this.onKeyUp.bind(this)
-    document.body.appendChild(this.element)
-    document.addEventListener('keyup', this.onKeyUp)
+    this.element = this.buildDOM(url);
+    this.images = images;
+    this.loadMedia(url);
+    this.onKeyUp = this.onKeyUp.bind(this);
+    document.body.appendChild(this.element);
+    document.addEventListener('keyup', this.onKeyUp);
   }
  
 
   loadMedia(url) {
-    // console.log(url);
     const extension = url.split('.').pop();
-    // console.log(url);
     this.url = null;
+
     if(extension == 'jpg') {
-      const image = new Image();
+      // const image = new Image();
+      const image = document.createElement('img');
+      const containerImage = this.element.querySelector('.lightbox_container');
+      // const loader = document.createElement('div');
+      // loader.classList.add('lightbox_loader');
+      containerImage.innerHTML = '';
+      // containerImage.appendChild(loader);
+
       image.onload = () => {
-        container.removeChild(loader)
-        container.appendChild(image)
-        this.url = url
+        // containerImage.removeChild(loader)
+        containerImage.appendChild(image);
+        this.url = url;
       }
       image.src = url
     }
+
     else if(extension == 'mp4') {
-      // const video = `<video controls class="media"><source src="${url}" type=video/mp4></video>`;
-      // video.onload = () => {
-      //   container.removeChild(loader)
-      //   container.appendChild(video)
-      //   this.url = url
-      // }
-      // video.src = url
+      const image = document.createElement('video');
+
+      // image.controls = true;
+      // image.innerHTML = `<source src="${url}" type="video/mp4">`;
+
+
+
+      
+      const containerVideo = this.element.querySelector('.lightbox_container');
+      // console.log(containerVideo);
+      // const loader = document.createElement('div');
+      // loader.classList.add('lightbox_loader');
+      containerVideo.innerHTML = `
+      <video controls class="media">
+        <track kind="subtitles" src="${url}.vtt" srclang="fr" label="Français">
+        <source src="${url}" type="video/mp4">
+      </video>`;
+
+
+      // containerVideo.innerHTML = '';
+      
+      image.onload = () => {
+        // containerVideo.removeChild(loader);
+        containerVideo.appendChild(image);
+        this.url = url;
+      }
+      image.src = url
     }
     
-    const container = this.element.querySelector('.lightbox_container');
-    const loader = document.createElement('div');
-    loader.classList.add('lightbox_loader');
-    container.innerHTML = '';
-    container.appendChild(loader);
   }
-
 
   /**
    * Ferme la lightbox via touche ESC
@@ -567,9 +610,10 @@ class Lightbox {
    */
   next(e) {
     e.preventDefault()
+    // debugger
     let i = this.images.findIndex(image => image === this.url)
     if (i === this.images.length - 1) {
-        i = -1
+        i = -1;
     }
     this.loadMedia(this.images[i + 1])
   }
@@ -582,9 +626,9 @@ class Lightbox {
     e.preventDefault()
     let i = this.images.findIndex(image => image === this.url)
     if (i === 0) {
-        i = this.images.length
+        i = this.images.length;
     }
-    this.loadMedia(this.images[i + - 1])
+    this.loadMedia(this.images[i - 1])
   }
 
   /**

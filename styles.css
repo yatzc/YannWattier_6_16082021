@@ -83,6 +83,8 @@ main {
 }
 
 
+
+
 @media screen and (max-width: 900px) {
     h1 { font-size: 14px; text-align: center; }
     h3 { font-size: 12px; }
@@ -481,6 +483,9 @@ button, li {
     font-family: DM Sans, sans-serif;
     font-size: 18px;
     font-weight: 700;
+}
+.portfolio {
+    margin-left: 2em;
 }
 
 .portfolio_select {
@@ -941,6 +946,22 @@ svg:hover {
     opacity: .5;
     background: url(img/loader.svg) center center no-repeat;
 }
+.lightbox_container video {
+    width: 80%;
+    /* height: 200px; */
+}
+.lightbox_container video::cue(b) {
+    color: peachpuff;
+  }
+
+.lightbox_container video::cue {
+    background-image: linear-gradient(to bottom, dimgray, lightgray);
+    color: papayawhip;
+} 
+
+.lightbox_container video::cue(v[voice=narrator]) {
+    color: yellow;
+}
 
 @keyframes lightboxIn {
     from { opacity: 0; }
@@ -951,10 +972,6 @@ svg:hover {
 
     .lightbox_prev {
         left: 6px;
-    }
-    .lightbox_container {
-        /* min-height: 89vh; */
-        margin: 20px 40px;
     }
     
     .lightbox_next,

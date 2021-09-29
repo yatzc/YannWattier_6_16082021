@@ -1,0 +1,23 @@
+WEBVTT - Ce fichier possède des répliques.
+
+1
+00:00:00.200 --> 00:00:01.000 vertical:rt size:50% align:start
+<v narrator>Jolie sculture</v>
+
+2
+00:00:01.000 --> 00:00:02.000 vertical:rt size:80% align:start
+<v narrator>Jolie sculture d'un cheval</v>
+
+3
+00:00:02.000 --> 00:00:03.000 vertical:rt size:100% align:start
+<v narrator>Jolie sculture d'un cheval en bois</v>
+
+4
+00:00:04.000 --> 00:00:06.000 size: 60%
+- C'est le pays des <b>licornes.</b>
+
+5
+00:00:06.210 --> 00:00:08.868 line:63% position:70%
+<u>[ Cris perçant de chauves-souris ]</u>
+
+NOTE Cette ligne est la dernière ligne du fichier
