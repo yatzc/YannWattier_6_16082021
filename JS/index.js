@@ -44,15 +44,15 @@ const fetchSearch = async() => {
 
             function photographerTemplate(photographer) {
                 return `
-                <article class="article_photographer ${photographer.tags.join(" ")}" id="${photographer.id}">
+                <article role="menu" class="article_photographer ${photographer.tags.join(" ")}" id="${photographer.id}">
                     <a href="photographer.html?id=${photographer.id}">
                         <img role="img" alt="photo de ${photographer.name}" class="photo__photographer" src="./Photos/Photographers_ID_Photos/${photographer.portrait}">
                         <h2>${photographer.name}</h2>
                     </a>
-                    <h3 aria-label="localité de ${photographer.name} est ${photographer.city} en ${photographer.country}">${photographer.city}, ${photographer.country}</h3>
-                    <p aria-label="le dicton du photographe est ${photographer.tagline}">${photographer.tagline}</p>
-                    <h4 aria-label="le prix du photographe est de ${photographer.price} euro par jour">${photographer.price}€/jour</h4>
-                    <nav role="menu" class="card_nav" aria-label="card navigation"  role="search">
+                    <h3 tabindex="0" aria-label="localité de ${photographer.name} est ${photographer.city} en ${photographer.country}">${photographer.city}, ${photographer.country}</h3>
+                    <p tabindex="0" aria-label="le dicton du photographe est ${photographer.tagline}">${photographer.tagline}</p>
+                    <h4 tabindex="0" aria-label="le prix du photographe est de ${photographer.price} euro par jour">${photographer.price}€/jour</h4>
+                    <nav class="card_nav" aria-label="card navigation"  role="search">
                         ${photographer.tags ? tags(photographer.tags) : ""}
                     </nav>
                 </article>
@@ -104,27 +104,6 @@ const fetchSearch = async() => {
 // #endregion PAGE index
 
 
-// #region OBJECT
-// CONSTRUCTEUR
-function Photographer(name, id, city, country, tags, tagline, price, portrait) {
-    this.name = name;
-    this.id = id;
-    this.city = city;
-    this.country = country;
-    this.tags = tags;
-    this.tagline = tagline;
-    this.price = price;
-    this.portrait = portrait;
-}
-// OBJET
-let newPhotographer = new Photographer("toto", 10, "Albi", "France", ["art", "fashion", "events"], "Voir le beau", 100, "MimiKeel.jpg");
-
-// console.log(newPhotographer);
-
-
-
-// #endregion
-
 // #region scroll action
 // import { openBlocPass } from './JS/index/backOnTop.mjs';
 const openBlocPass = document.querySelector(".btn_backTop");
@@ -144,8 +123,5 @@ window.addEventListener('scroll', () => {
     }
 })
 // #endregion scroll action
-
-
-// getDataPhotographer();
 
 fetchSearch();

@@ -1,21 +1,31 @@
-// #region ======================== PAGE photographer
+// #region ============ DOM ELEMENTS
+// MAIN
+const mainContainer = document.querySelector("#main_container");
+// FORM
+const formBtnOpen    = document.querySelectorAll(".btn_contact");
+const formBg         = document.querySelector(".bground");
+const formCrossClose = document.querySelectorAll(".close");
+
+// lightbox
+const photoContainer = document.querySelector("#portfolio_photos");
+const lightboxBtnOpen    = document.querySelectorAll(".test");
+const lightboxBg         = document.querySelector(".lightbox_bground");
+const lightboxCrossClose = document.querySelectorAll(".lightbox_close");
+const lightboxBtnClose = document.querySelector("#btn_message");
+// #endregion ============ DOM ELEMENTS
 
 // #region ============ MAIN
 let searchParams = new URLSearchParams(window.location.search);
 
 //test si id est dans url
-// console.log(searchParams.has(`id`));
 if (searchParams.has(`id`)) {
-  // code à effectuer
+  // récupération id dans variable
   let photographeId = searchParams.get(`id`);
-  // console.log(photographeId);
-
   // garder l'id lors de la validation du formulaire
-  // document.getElementById("id").innerHTML = photographeId;
   document.querySelector("#id").value = photographeId;
 
 
-  // APPEL PHOTOGATHER JSON
+  // APPEL PHOTOGRATHER JSON
   fetch('./data/FishEyeData.json').then(response => { return response.json(); })
     .then(data => {
 
@@ -59,6 +69,7 @@ if (searchParams.has(`id`)) {
         const handleClickOut = e => {
           if(!dropDown) {
             return document.removeEventListener('click', handleClickOut);
+            
           }
           if(!dropDown.contains(e.target)) {
             this.toggle(false);
@@ -136,14 +147,6 @@ if (searchParams.has(`id`)) {
         mediaSort(dropDown.value);
       });
 
-      // dropDown.element.addEventListener('opened', e => {
-      //   console.log('opened', dropDown.value);
-      // });
-
-      // dropDown.element.addEventListener('closed', e => {
-      //   console.log('closed', dropDown.value);
-      // });
-
 // dropDown.toggle();
 
 // #endregion ============ SELECT
@@ -151,8 +154,6 @@ if (searchParams.has(`id`)) {
 // #region ============ Le tri par SELECT
     
       function mediaSort(styleMedia) {
-        // let articles = "Popularité";
-        // console.table(theMediasOfPhotographer);
         if (styleMedia == "") { theMediasOfPhotographer = theMediasOfPhotographer; }
         else if (styleMedia == "Popularité") { theMediasOfPhotographer.sort((a, b) => b.likes - a.likes); }
         else if (styleMedia == "Date")       { theMediasOfPhotographer.sort((a, b) => new Date(b.date) - new Date(a.date)); }
@@ -161,35 +162,9 @@ if (searchParams.has(`id`)) {
           if (a.title.toLowerCase() > b.title.toLowerCase()) { return  1; } 
           return  0;
         })}
-        // console.table(theMediasOfPhotographer);
 
 // #region ============ Affichage photo card par tri
-        function mediaTemplate(mediaPhotographer) {
-          return `
-          <article class="photo_article ${mediaPhotographer.tags}">
-            <div class="photo_flex">
-              ${toggleMedia(mediaPhotographer)}
-              <div class="photo_foot">
-                <p class="media_text">${mediaPhotographer.title}</p>
-                <p class="media_price">${mediaPhotographer.price}€</p>
-                <div class="media_likes">
-                  <p data-datanblike="0" data-id="${mediaPhotographer.id}" class="number_like" >${mediaPhotographer.likes}</p>
-                  <button data-like="false" data-id="${mediaPhotographer.id}" class="btn_heart"><i class="fas fa-heart"></i></button>
-                </div>
-              </div>
-            </div>
-          </article>
-          `;
-        }
-        // Fonction qui affiche les photos et fait lien avec soit video soit photo en fonction du media json
-        function toggleMedia(isMedia) {
-          if (isMedia.image) { 
-            return (`<a href="./Photos/${photographeId}/${isMedia.image}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${isMedia.image}"></a>`); }
-          else if (isMedia.video) {
-            let file = isMedia.video;
-            file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
-            return (`<a href="./Photos/${photographeId}/${isMedia.video}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
-        }
+
                 
         document.getElementById("portfolio_photos").innerHTML = `${theMediasOfPhotographer.map(mediaTemplate).join("")}`;
 
@@ -207,10 +182,10 @@ if (searchParams.has(`id`)) {
           <div class="photo_flex">
             ${toggleMedia(mediaPhotographer)}
             <div class="photo_foot">
-              <p class="media_text">${mediaPhotographer.title}</p>
-              <p class="media_price">${mediaPhotographer.price}€</p>
+              <p tabindex="0" class="media_text">${mediaPhotographer.title}</p>
+              <p tabindex="0" class="media_price">${mediaPhotographer.price}€</p>
               <div class="media_likes">
-                <p data-datanblike="0" data-id="${mediaPhotographer.id}" class="number_like" >${mediaPhotographer.likes}</p>
+                <p tabindex="0" data-datanblike="0" data-id="${mediaPhotographer.id}" class="number_like" >${mediaPhotographer.likes}</p>
                 <button data-like="false" data-id="${mediaPhotographer.id}" class="btn_heart"><i class="fas fa-heart"></i></button>
               </div>
             </div>
@@ -320,20 +295,7 @@ if (searchParams.has(`id`)) {
 }
 // #endregion ============ MAIN
 
-// #region ============ DOM ELEMENTS FORM + lightbox
-// FORM
-const formBtnOpen    = document.querySelectorAll(".btn_contact");
-const formBg         = document.querySelector(".bground");
-const formCrossClose = document.querySelectorAll(".close");
-
-// lightbox
-const lightboxBtnOpen    = document.querySelectorAll(".test");
-const lightboxBg         = document.querySelector(".lightbox_bground");
-const lightboxCrossClose = document.querySelectorAll(".lightbox_close");
-// #endregion ============ DOM ELEMENTS FORM + lightbox
-
 // #region ============ FORM
-
 
 // open form (btn)
 formBtnOpen.forEach((btn) => btn.addEventListener("click", openBtnForm));
@@ -349,12 +311,26 @@ function openBtnForm(e) {
   smallLast.style.display = "none";
   smallEmail.style.display = "none";
   smallTextarea.style.display = "none";
+  mainContainer.setAttribute('aria-hidden', 'true');
+  formBg.setAttribute('aria-hidden', 'false');
+  lightboxBtnClose.focus();
 }
 
 // close form (cross)
 formCrossClose.forEach((btn) => btn.addEventListener("click", closeBtnForm));
 function closeBtnForm() {
   formBg.style.display = "none";
+  mainContainer.setAttribute('aria-hidden', 'false');
+  formBg.setAttribute('aria-hidden', 'true');
+  formBtnOpen.focus();
+}
+// close form (key escape)
+window.addEventListener("keydown", checkKeyPress, false);
+function checkKeyPress(key) {
+  if(key.keyCode === 27) { formBg.style.display = "none"; }
+  mainContainer.setAttribute('aria-hidden', 'false');
+  formBg.setAttribute('aria-hidden', 'true');
+  // formBtnOpen.focus();
 }
 
 //#region ==== CONDITION RULES
@@ -374,12 +350,14 @@ const validFirst = function (inputFirst) {
     small.style.display = "none";
     small.classList.remove("text-danger");
     inputFirst.style.border = "green solid 2px";
+    form.first.setAttribute("aria-invalid", "true");
     return true;
   } else {
     small.style.display = "inline-block";
     small.innerHTML = "Vous devez entrer 2 caractères ou plus.";
     small.classList.add("text-danger");
     inputFirst.style.border = "red solid 2px";
+    form.first.setAttribute("aria-invalid", "false");
     return false;
   }
 };
@@ -398,12 +376,14 @@ const validLast = function (inputLast) {
     small.style.display = "none";
     small.classList.remove("text-danger");
     inputLast.style.border = "green solid 2px";
+    form.last.setAttribute("aria-invalid", "true");
     return true;
   } else {
     small.style.display = "inline-block";
     small.innerHTML = "Vous devez entrer 2 caractères ou plus.";
     small.classList.add("text-danger");
     inputLast.style.border = "red solid 2px";
+    form.last.setAttribute("aria-invalid", "false");
     return false;
   }
 };
@@ -422,12 +402,14 @@ const validEmail = function (inputEmail) {
     small.style.display = "none";
     small.classList.remove("text-danger");
     inputEmail.style.border = "green solid 2px";
+    form.email.setAttribute("aria-invalid", "true");
     return true;
   } else {
     small.style.display = "inline-block";
     small.innerHTML = "Vous devez entrer une adresse email valide.";
     small.classList.add("text-danger");
     inputEmail.style.border = "red solid 2px";
+    form.email.setAttribute("aria-invalid", "false");
     return false;
   }
 };
@@ -446,12 +428,14 @@ const validMessage = function (inputTextarea) {
     small.style.display = "none";
     small.classList.remove("text-danger");
     inputTextarea.style.border = "green solid 2px";
+    form.textarea.setAttribute("aria-invalid", "true");
     return true;
   } else {
     small.style.display = "inline-block";
     small.innerHTML = "Vous devez entrer 2 caractères ou plus.";
     small.classList.add("text-danger");
     inputTextarea.style.border = "red solid 2px";
+    form.textarea.setAttribute("aria-invalid", "false");
     return false;
   }
 };
@@ -467,6 +451,9 @@ form.addEventListener("submit", function (e) {
     validMessage(form.textarea)
   ) {
     formBg.style.display = "none";
+    mainContainer.setAttribute('aria-hidden', 'false');
+    formBg.setAttribute('aria-hidden', 'true');
+    formBtnOpen.focus();
     
     let searchParamsForm = new URLSearchParams(window.location.search);
     console.log(
@@ -504,7 +491,6 @@ class Lightbox {
   static init() {
     const links = Array.from(document.querySelectorAll('a[href$=".jpg"], a[href$=".mp4"]'))
     const gallery = links.map(link => link.getAttribute('href'))
-    console.table(gallery);
     // debugger
     links.forEach(link => link.addEventListener('click', e => {
         e.preventDefault()
@@ -524,7 +510,6 @@ class Lightbox {
     document.body.appendChild(this.element);
     document.addEventListener('keyup', this.onKeyUp);
   }
- 
 
   loadMedia(url) {
     const extension = url.split('.').pop();
@@ -533,48 +518,41 @@ class Lightbox {
     if(extension == 'jpg') {
       // const image = new Image();
       const image = document.createElement('img');
+      image.controls = true;
       const containerImage = this.element.querySelector('.lightbox_container');
-      // const loader = document.createElement('div');
-      // loader.classList.add('lightbox_loader');
+      const loader = document.createElement('div');
+      loader.classList.add('lightbox_loader');
       containerImage.innerHTML = '';
-      // containerImage.appendChild(loader);
 
+      containerImage.appendChild(loader);
+      
       image.onload = () => {
-        // containerImage.removeChild(loader)
-        containerImage.appendChild(image);
         this.url = url;
+        containerImage.removeChild(loader);
+        containerImage.appendChild(image);
       }
-      image.src = url
+      image.src = url;
     }
 
     else if(extension == 'mp4') {
-      const image = document.createElement('video');
-
-      // image.controls = true;
-      // image.innerHTML = `<source src="${url}" type="video/mp4">`;
-
-
-
-      
+      const video = document.createElement('video');
+      video.controls = true;
+      // ajout de sous titre
+      video.innerHTML = `<track kind="subtitles" src="${url}.vtt" srclang="fr" label="Français">`;
       const containerVideo = this.element.querySelector('.lightbox_container');
-      // console.log(containerVideo);
-      // const loader = document.createElement('div');
-      // loader.classList.add('lightbox_loader');
-      containerVideo.innerHTML = `
-      <video controls class="media">
-        <track kind="subtitles" src="${url}.vtt" srclang="fr" label="Français">
-        <source src="${url}" type="video/mp4">
-      </video>`;
+      const loader = document.createElement('div');
+      loader.classList.add('lightbox_loader');
+      containerVideo.innerHTML = '';
 
-
-      // containerVideo.innerHTML = '';
+      containerVideo.appendChild(loader);
       
-      image.onload = () => {
-        // containerVideo.removeChild(loader);
-        containerVideo.appendChild(image);
+      video.onloadstart  = () => {
         this.url = url;
+        containerVideo.removeChild(loader);
+        containerVideo.appendChild(video);
+        
       }
-      image.src = url
+      video.src = url;
     }
     
   }
@@ -602,6 +580,8 @@ class Lightbox {
         this.element.parentElement.removeChild(this.element)
     }, 500)
     document.removeEventListener('keyup', this.onKeyUp)
+    mainContainer.setAttribute('aria-hidden', 'false');
+    photoContainer.setAttribute('aria-hidden', 'true');
   }
 
   /**
@@ -636,6 +616,9 @@ class Lightbox {
    * @return {HTMLElement}
    */
   buildDOM(url) {
+    mainContainer.setAttribute('aria-hidden', 'true');
+    photoContainer.setAttribute('aria-hidden', 'false');
+
     const dom = document.createElement('div')
     dom.classList.add('lightbox_bground')
     dom.innerHTML = `
@@ -652,66 +635,5 @@ class Lightbox {
 }
 // #endregion ============ LIGHTBOX
 
-// #region ============ Class Media factory
-
-
-
-
-
-
-class VideoMedia {
-  constructor(optionOfMedia) {
-    this.optionOfMedia  = optionOfMedia;
-
-    function create(parameter, data) {
-      return new VideoMedia();
-    }
-  }
-  
-}
-
-class ImageMedia {
-  constructor() {
-    this.width  = width;
-    this.height = height;
-
-    function create(data) {
-      return new ImageMedia();
-    }
-  }
-}
-
-
-// static function findType(parameter, data) {
-//   const parameter = Image;
-//   switch (parameter) {
-//     case 'video':
-//       console.log('Test video.');
-//       return new VideoMedia(data.media['video']);
-//       break;
-//     case 'image':
-//       console.log('Test image');
-//       return new ImageMedia(data.media['image']);
-//       break;
-//     default:
-//       console.log(`Error.`);
-//   }
-// }
-
-  
-
-
-
-
-
-
 // #endregion ======================== PAGE photographer
 
-
-
-// #region CODE JL
-// const datas = data.photographers.filter(donnees => donnees.id == photographeId);
-// console.log(datas);
-
-// console.log(JSON.stringify(identity))
-// #endregion
