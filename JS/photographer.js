@@ -12,6 +12,10 @@ const lightboxBtnOpen    = document.querySelectorAll(".test");
 const lightboxBg         = document.querySelector(".lightbox_bground");
 const lightboxCrossClose = document.querySelectorAll(".lightbox_close");
 const lightboxBtnClose = document.querySelector("#btn_message");
+
+
+
+
 // #endregion ============ DOM ELEMENTS
 
 // #region ============ MAIN
@@ -61,97 +65,182 @@ if (searchParams.has(`id`)) {
       // media du photographe
       var theMediasOfPhotographer = data.media.filter(donnees => donnees.photographerId == photographeId);
 
-// #region ============ SELECT
+// #region ====== SELECT
 
-      function DropDown(dropDown) {
-        const [toggler, menu] = dropDown.children;
+      // function DropDown(dropDown) {
+      //   const [toggler, menu] = dropDown.children;
         
-        const handleClickOut = e => {
-          if(!dropDown) {
-            return document.removeEventListener('click', handleClickOut);
+      //   const handleClickOut = e => {
+      //     if(!dropDown) {
+      //       return document.removeEventListener('click', handleClickOut);
             
-          }
-          if(!dropDown.contains(e.target)) {
-            this.toggle(false);
-          }
-        };
+      //     }
+      //     if(!dropDown.contains(e.target)) {
+      //       this.toggle(false);
+      //     }
+      //   };
         
-        const setValue = (item) => {
-          const val = item.textContent;
-          toggler.textContent = val;
-          this.value = val;
-          this.toggle(false);
-          dropDown.dispatchEvent(new Event('change'));
-          toggler.focus();
-        }
+      //   const setValue = (item) => {
+      //     const val = item.textContent;
+      //     toggler.textContent = val;
+      //     this.value = val;
+      //     this.toggle(false);
+      //     dropDown.dispatchEvent(new Event('change'));
+      //     toggler.focus();
+      //   }
         
-        const handleItemKeyDown = (e) => {
-          e.preventDefault();
+      //   const handleItemKeyDown = (e) => {
+      //     e.preventDefault();
 
-          if(e.keyCode === 38 && e.target.previousElementSibling) {
-            e.target.previousElementSibling.focus();
-          } else if(e.keyCode === 40 && e.target.nextElementSibling) {
-            e.target.nextElementSibling.focus();
-          } else if(e.keyCode === 27) {
-            this.toggle(false);
-          } else if(e.keyCode === 13 || e.keyCode === 32) {
-            setValue(e.target);
-          }
-        }
+      //     if(e.keyCode === 38 && e.target.previousElementSibling) {
+      //       e.target.previousElementSibling.focus();
+      //     } else if(e.keyCode === 40 && e.target.nextElementSibling) {
+      //       e.target.nextElementSibling.focus();
+      //     } else if(e.keyCode === 27) {
+      //       this.toggle(false);
+      //     } else if(e.keyCode === 13 || e.keyCode === 32) {
+      //       setValue(e.target);
+      //     }
+      //   }
 
-        const handleToggleKeyPress = (e) => {
-          e.preventDefault();
+      //   const handleToggleKeyPress = (e) => {
+      //     e.preventDefault();
 
-          if(e.keyCode === 27) {
-            this.toggle(false);
-          } else if(e.keyCode === 13 || e.keyCode === 32) {
-            this.toggle(true);
-          }
-        }
+      //     if(e.keyCode === 27) {
+      //       this.toggle(false);
+      //     } else if(e.keyCode === 13 || e.keyCode === 32) {
+      //       this.toggle(true);
+      //     }
+      //   }
         
-        toggler.addEventListener('keydown', handleToggleKeyPress);
-        toggler.addEventListener('click', () => this.toggle());
-        [...menu.children].forEach(item => {
-          item.addEventListener('keydown', handleItemKeyDown);
-          item.addEventListener('click', () => setValue(item));
-        });
+      //   toggler.addEventListener('keydown', handleToggleKeyPress);
+      //   toggler.addEventListener('click', () => this.toggle());
+      //   [...menu.children].forEach(item => {
+      //     item.addEventListener('keydown', handleItemKeyDown);
+      //     item.addEventListener('click', () => setValue(item));
+      //   });
         
-        this.element = dropDown;
+      //   this.element = dropDown;
         
-        this.value = toggler.textContent;
+      //   this.value = toggler.textContent;
         
-        this.toggle = (expand = null) => {
-          expand = expand === null
-            ? menu.getAttribute('aria-expanded') !== 'true'
-            : expand;
+      //   this.toggle = (expand = null) => {
+      //     expand = expand === null ? menu.getAttribute('aria-expanded') !== 'true' : expand;
 
-          menu.setAttribute('aria-expanded', expand);
+      //     menu.setAttribute('aria-expanded', expand);
           
-          if(expand) {
-            toggler.classList.add('active');
-            menu.children[0].focus();
-            document.addEventListener('click', handleClickOut);
-            dropDown.dispatchEvent(new Event('opened'));
-          } else {
-            toggler.classList.remove('active');
-            dropDown.dispatchEvent(new Event('closed'));
-            document.removeEventListener('click', handleClickOut);
-          }
-        }
-      }
+      //     if(expand) {
+      //       toggler.classList.add('active');
+      //       menu.children[0].focus();
+      //       document.addEventListener('click', handleClickOut);
+      //       dropDown.dispatchEvent(new Event('opened'));
+      //     } else {
+      //       toggler.classList.remove('active');
+      //       dropDown.dispatchEvent(new Event('closed'));
+      //       document.removeEventListener('click', handleClickOut);
+      //     }
+      //   }
+      // }
 
-      var dropDown = new DropDown(document.querySelector('.dropdown'));
+      // var dropDown = new DropDown(document.querySelector('.dropdown'));
         
-      dropDown.element.addEventListener('change', e => {
-        // console.log('changed', dropDown.value);
-        mediaSort(dropDown.value);
-      });
+      // dropDown.element.addEventListener('change', e => {
+      //   mediaSort(dropDown.value);
+      // });
+
 
 // dropDown.toggle();
 
 // #endregion ============ SELECT
 
-// #region ============ Le tri par SELECT
+
+
+
+
+window.altTxt = data.description;
+
+
+
+
+
+
+
+
+// #region ============ SELECT II
+
+
+const muBtnSelect = document.querySelector(".css-select");
+
+window.cssSelect = (option) => {
+  const parent = option.parentNode.parentNode;
+  parent.querySelector('[data-css-select="hidden"]').value = option.dataset.cssSelect;
+  parent.querySelector('[data-css-select="selected"]').value = option.innerHTML;
+  document.activeElement.blur();
+};
+
+muBtnSelect.addEventListener('keydown', (event) => {
+  const target = event.target;
+  if ((target.dataset.cssSelect === 'Popularité') && (event.keyCode === 13)) {
+    console.log('Popularité')
+    mediaSort('Popularité');
+    return null;
+  }
+  if ((target.dataset.cssSelect === 'Date') && (event.keyCode === 13)) {
+    console.log('Date')
+    mediaSort('Date');
+    return null;
+  }
+  if ((target.dataset.cssSelect === 'Titre') && (event.keyCode === 13)) {
+    console.log('Titre')
+    mediaSort('Titre');
+    return null;
+  }
+});
+
+muBtnSelect.addEventListener('mousedown', (event) => {
+  const target = event.target;
+  // if (!(target.dataset.cssSelect && target.dataset.cssSelect === 'selected')) {
+  //     return null;
+  // }
+  if (target.dataset.cssSelect === 'Popularité') {
+    console.log('Popularité')
+    mediaSort('Popularité');
+    return null;
+  }
+  if (target.dataset.cssSelect === 'Date') {
+    console.log('Date')
+    mediaSort('Date');
+    return null;
+  }
+  if (target.dataset.cssSelect === 'Titre') {
+    console.log('Titre')
+    mediaSort('Titre');
+    return null;
+  }
+  // if (window.getComputedStyle(target.nextElementSibling).visibility === 'visible') {
+  //     setTimeout(() => void document.activeElement.blur(), 0);
+  // }
+});
+
+
+// #endregion ============ SELECT II
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// #region ====== Le tri par SELECT
     
       function mediaSort(styleMedia) {
         if (styleMedia == "") { theMediasOfPhotographer = theMediasOfPhotographer; }
@@ -175,18 +264,17 @@ if (searchParams.has(`id`)) {
 
 // #endregion ============ Le tri par SELECT
 
-// #region ============ Affichage photo card
+// #region ====== Affichage photo card
       function mediaTemplate(mediaPhotographer) {
         return `
         <article class="photo_article ${mediaPhotographer.tags}">
           <div class="photo_flex">
             ${toggleMedia(mediaPhotographer)}
             <div class="photo_foot">
-              <p tabindex="0" class="media_text">${mediaPhotographer.title}</p>
-              <p tabindex="0" class="media_price">${mediaPhotographer.price}€</p>
+              <p class="media_text">${mediaPhotographer.title}</p>
               <div class="media_likes">
                 <p tabindex="0" data-datanblike="0" data-id="${mediaPhotographer.id}" class="number_like" >${mediaPhotographer.likes}</p>
-                <button data-like="false" data-id="${mediaPhotographer.id}" class="btn_heart"><i class="fas fa-heart"></i></button>
+                <button aria-label="click si tu aime" data-like="false" data-id="${mediaPhotographer.id}" class="btn_heart"><i class="fas fa-heart"></i></button>
               </div>
             </div>
           </div>
@@ -196,11 +284,11 @@ if (searchParams.has(`id`)) {
       // Fonction qui affiche les photos et fait lien avec soit video soit photo en fonction du media json
       function toggleMedia(isMedia) {
         if (isMedia.image) { 
-          return (`<a href="./Photos/${photographeId}/${isMedia.image}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${isMedia.image}"></a>`); }
+          return (`<a aria-label="${isMedia.description}" href="./Photos/${photographeId}/${isMedia.image}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${isMedia.image}"></a>`); }
         else if (isMedia.video) {
           let file = isMedia.video;
           file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
-          return (`<a href="./Photos/${photographeId}/${isMedia.video}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
+          return (`<a aria-label="${isMedia.description}" href="./Photos/${photographeId}/${isMedia.video}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
       }
               
       document.getElementById("portfolio_photos").innerHTML = `${theMediasOfPhotographer.map(mediaTemplate).join("")}`;
@@ -311,27 +399,57 @@ function openBtnForm(e) {
   smallLast.style.display = "none";
   smallEmail.style.display = "none";
   smallTextarea.style.display = "none";
+  document.getElementById("identity_card").style.display = "none";
+  document.getElementById("portfolio").style.display = "none";
+  document.getElementById("bloc_counter").style.display = "none";
+  document.getElementById("portfolio_photos").style.display = "none";
+  document.getElementById("banner").style.display = "none";
   mainContainer.setAttribute('aria-hidden', 'true');
   formBg.setAttribute('aria-hidden', 'false');
-  lightboxBtnClose.focus();
+  document.querySelector('.content').focus();
 }
 
-// close form (cross)
+// ========================================== CLOSE FORM BY CROSS BTN
 formCrossClose.forEach((btn) => btn.addEventListener("click", closeBtnForm));
 function closeBtnForm() {
   formBg.style.display = "none";
   mainContainer.setAttribute('aria-hidden', 'false');
   formBg.setAttribute('aria-hidden', 'true');
-  formBtnOpen.focus();
+  document.getElementById("identity_card").style.display = "flex";
+  document.getElementById("portfolio").style.display = "block";
+  document.getElementById("bloc_counter").style.display = "block";
+  document.getElementById("portfolio_photos").style.display = "flex";
+  document.getElementById("banner").style.display = "block";
 }
-// close form (key escape)
+// ========================================== CLOSE FORM BY KEYCODE
 window.addEventListener("keydown", checkKeyPress, false);
 function checkKeyPress(key) {
-  if(key.keyCode === 27) { formBg.style.display = "none"; }
-  mainContainer.setAttribute('aria-hidden', 'false');
-  formBg.setAttribute('aria-hidden', 'true');
-  // formBtnOpen.focus();
+  if(key.keyCode === 27) {
+    formBg.style.display = "none";
+    mainContainer.setAttribute('aria-hidden', 'false');
+    formBg.setAttribute('aria-hidden', 'true');
+    document.getElementById("identity_card").style.display = "flex";
+    document.getElementById("portfolio").style.display = "block";
+    document.getElementById("bloc_counter").style.display = "block";
+    document.getElementById("portfolio_photos").style.display = "flex";
+    document.getElementById("banner").style.display = "block";
+    // document.querySelector(".btn_contact").focus();
+  }
+  
 }
+
+// ========================================== CLOSE FORM BY KEYCODE
+const closeForm = document.getElementById('closeform')
+closeForm.addEventListener("keydown", (key) => {
+  if(key.keyCode === 13){
+    document.getElementById("identity_card").style.display = "flex";
+    document.getElementById("portfolio").style.display = "block";
+    document.getElementById("bloc_counter").style.display = "block";
+    document.getElementById("portfolio_photos").style.display = "flex";
+    document.getElementById("banner").style.display = "block";
+    formBg.style.display = "none";
+  }
+});
 
 //#region ==== CONDITION RULES
 let form = document.querySelector("#contactForm");
@@ -418,7 +536,7 @@ const validEmail = function (inputEmail) {
 form.textarea.addEventListener("change", function () { validMessage(this); });
 
 const validMessage = function (inputTextarea) {
-  let textareaRegExp = new RegExp("^[a-zA-Z]{2,20}$", "g");
+  let textareaRegExp = new RegExp("^[a-zA-Z.- ]{2,100}$", "g");
 
   let testTextarea = textareaRegExp.test(inputTextarea.value);
 
@@ -483,42 +601,177 @@ form.addEventListener("submit", function (e) {
 
 /**
  * @param {HTMLElement} element
- * @param {string[]} images liste des URL des images du diaporama
- * @param {string} url image actuel dans la lightbox
+ * @param {string[]} srcArray liste des URL des srcArray du diaporama
+ * @param {string} srcTxt image actuel dans la lightbox
  */
 class Lightbox {
 
-  static init() {
-    const links = Array.from(document.querySelectorAll('a[href$=".jpg"], a[href$=".mp4"]'))
-    const gallery = links.map(link => link.getAttribute('href'))
-    // debugger
-    links.forEach(link => link.addEventListener('click', e => {
-        e.preventDefault()
-        new Lightbox(e.currentTarget.getAttribute('href'), gallery)
-    }))
-  }
-
   /**
-   * @param {string} url URL de l'image
-   * @param {string[]} images liste des URL des images du diaporama
+   * @param {string} srcTxt SRC de l'image
+   * @param {string} altTxt ALT de l'image
+   * @param {string[]} srcArray liste des URL des srcArray du diaporama
    */
-  constructor(url, images) {
-    this.element = this.buildDOM(url);
-    this.images = images;
-    this.loadMedia(url);
+   constructor(srcTxt, srcArray, altTxt, altArray) {
+    this.element = this.buildDOM(srcTxt);
+    this.srcArray = srcArray;
+    this.altArray = altArray;
+    // this.altTxt = altTxt;
+    this.loadMedia(srcTxt, altTxt);
     this.onKeyUp = this.onKeyUp.bind(this);
     document.body.appendChild(this.element);
     document.addEventListener('keyup', this.onKeyUp);
   }
 
-  loadMedia(url) {
-    const extension = url.split('.').pop();
-    this.url = null;
+  static init() {
+    // ajout src de chaque image du portfolio dans arraySrc
+    const arraySrc = Array.from(document.querySelectorAll('a[href$=".jpg"], a[href$=".mp4"]'));
+    const gallerySrc = arraySrc.map(link => link.getAttribute('href'));
+    // ajout alt de chaque image du portfolio dans arrayAlt
+    const arrayAlt = Array.from(document.querySelectorAll('a[href$=".jpg"], a[href$=".mp4"]'));
+    const galleryAlt = arrayAlt.map(link => link.getAttribute('aria-label'));
+
+    arraySrc.forEach(link => link.addEventListener('click', e => {
+        e.preventDefault();
+        new Lightbox(e.currentTarget.getAttribute('href'), gallerySrc, e.currentTarget.getAttribute('aria-label'), galleryAlt);
+    }))
+  }
+
+  loadMedia(srcTxt, altTxt) {
+    const extension = srcTxt.split('.').pop();
+    this.srcTxt = null;
+    this.altTxt = null;
+
+
+// #region ============ FACTORY
+class MyMedia {
+  createMedia(srcTxt, altTxt) {
+
+  }
+}
+
+class MyImage extends MyMedia {
+  createMedia(srcTxt, altTxt) {
+
+
+    console.log(`<img src="${srcTxt}" alt="${altTxt}" />`);
+
+
+    const image = document.createElement('img');
+
+    // const containerImage = this.element.querySelector('.lightbox_container');
+    // const loader = document.createElement('div');
+    // loader.classList.add('lightbox_loader');
+    // containerImage.innerHTML = '';
+
+    // containerImage.appendChild(loader);
+    
+    // image.onload = () => {
+    //   this.srcTxt = srcTxt;
+    //   this.altTxt = altTxt;
+    //   containerImage.removeChild(loader);
+    //   containerImage.appendChild(image);
+    // }
+    // image.src = srcTxt;
+    // image.alt = altTxt;
+
+
+  }
+}
+
+class MyVideo extends MyMedia {
+  createMedia(srcTxt, altTxt) {
+
+
+    console.log(`<video src="${srcTxt}" alt="${altTxt}"></video>`);
+
+
+  }
+}
+
+function factory(srcTxt, altTxt) {
+  const ext = srcTxt.split('.').pop();
+  switch(ext) {
+    case "jpg":
+      return new MyImage();
+    case "mp4":
+      return new MyVideo();
+  }
+}
+
+const imageDe = factory(srcTxt, altTxt);
+imageDe.createMedia(srcTxt, altTxt);
+
+
+
+// #endregion ============ FACTORY
+
+// #region ============ FACTORY 2
+    // function createImage(src, altTxt) {
+    //   return `<img src=${src} alt=${altTxt} />`;
+    // }
+
+    // function createVideo(src, altTxt) {
+    //   return `<video src="${src} alt=${altTxt}></video>`;
+    // }
+
+    // function createMedia(src, altTxt) {
+
+    //   function toto() {
+    //     console.log('toto');
+    //   }
+
+    //   return { src, altTxt, toto }
+      
+    // }
+
+    // createMedia(url, alt);
+// #endregion ============ FACTORY 2
+
+// #region ============ FACTORY 1
+    // function MyImage(url) {
+    //   this.url = url;
+    //   this.type = "jpg"
+    // }
+
+    // function MyVideo(url) {
+    //   this.url = url;
+    //   this.type = "mp4";
+    // }
+
+    // function MediaFactory() {
+    //   this.create = (url, type) => {
+    //     switch(type) {
+    //       case 1:
+    //         return new MyImage(url);
+    //         break;
+    //       case 2:
+    //         return new MyVideo(url);
+    //         break;
+    //     }
+    //   }
+    // }
+
+    // function say() {
+    //   console.log("Hello " + this.url + " I am a " + this.type);
+    // }
+
+    // const mediaFactory = new MediaFactory();
+    // const media = [];
+
+    // media.push(mediaFactory.create("tutu", 1));
+    // media.push(mediaFactory.create("toto", 2));
+
+    // media.forEach(element => {
+    //   say.call(element);
+    // });
+// #endregion ============ FACTORY 1
+
+
 
     if(extension == 'jpg') {
       // const image = new Image();
       const image = document.createElement('img');
-      image.controls = true;
+      // image.controls = true;
       const containerImage = this.element.querySelector('.lightbox_container');
       const loader = document.createElement('div');
       loader.classList.add('lightbox_loader');
@@ -527,18 +780,20 @@ class Lightbox {
       containerImage.appendChild(loader);
       
       image.onload = () => {
-        this.url = url;
+        this.srcTxt = srcTxt;
+        this.altTxt = altTxt;
         containerImage.removeChild(loader);
         containerImage.appendChild(image);
       }
-      image.src = url;
+      image.src = srcTxt;
+      image.alt = altTxt;
     }
 
     else if(extension == 'mp4') {
       const video = document.createElement('video');
       video.controls = true;
       // ajout de sous titre
-      video.innerHTML = `<track kind="subtitles" src="${url}.vtt" srclang="fr" label="Français">`;
+      video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
       const containerVideo = this.element.querySelector('.lightbox_container');
       const loader = document.createElement('div');
       loader.classList.add('lightbox_loader');
@@ -547,12 +802,12 @@ class Lightbox {
       containerVideo.appendChild(loader);
       
       video.onloadstart  = () => {
-        this.url = url;
+        this.srcTxt = srcTxt;
         containerVideo.removeChild(loader);
         containerVideo.appendChild(video);
-        
       }
-      video.src = url;
+      video.src = srcTxt;
+      video.alt = altTxt;
     }
     
   }
@@ -582,6 +837,7 @@ class Lightbox {
     document.removeEventListener('keyup', this.onKeyUp)
     mainContainer.setAttribute('aria-hidden', 'false');
     photoContainer.setAttribute('aria-hidden', 'true');
+    window.location.reload(true);
   }
 
   /**
@@ -591,11 +847,11 @@ class Lightbox {
   next(e) {
     e.preventDefault()
     // debugger
-    let i = this.images.findIndex(image => image === this.url)
-    if (i === this.images.length - 1) {
-        i = -1;
-    }
-    this.loadMedia(this.images[i + 1])
+    let i = this.srcArray.findIndex(image => image === this.srcTxt);
+    let j = this.altArray.findIndex(alt => alt === this.altTxt);
+    if (i === this.srcArray.length - 1) { i = -1; }
+    if (j === this.altArray.length - 1) { j = -1; }
+    this.loadMedia(this.srcArray[i + 1], this.altArray[j + 1]);
   }
 
   /**
@@ -604,27 +860,32 @@ class Lightbox {
    */
   prev(e) {
     e.preventDefault()
-    let i = this.images.findIndex(image => image === this.url)
-    if (i === 0) {
-        i = this.images.length;
-    }
-    this.loadMedia(this.images[i - 1])
+    let i = this.srcArray.findIndex(image => image === this.srcTxt);
+    let j = this.altArray.findIndex(alt => alt === this.altTxt);
+    if (i === 0) { i = this.srcArray.length; }
+    if (j === 0) { j = this.altArray.length; }
+    this.loadMedia(this.srcArray[i - 1], this.altArray[i - 1]);
   }
 
   /**
-   * @param {string} url URL de l'image
+   * @param {string} srcTxt URL de l'image
    * @return {HTMLElement}
    */
-  buildDOM(url) {
+  buildDOM(srcTxt) {
     mainContainer.setAttribute('aria-hidden', 'true');
     photoContainer.setAttribute('aria-hidden', 'false');
+    document.getElementById("identity_card").style.display = "none";
+    document.getElementById("portfolio").style.display = "none";
+    document.getElementById("bloc_counter").style.display = "none";
+    document.getElementById("portfolio_photos").style.display = "none";
+    document.getElementById("banner").style.display = "none";
 
     const dom = document.createElement('div')
     dom.classList.add('lightbox_bground')
     dom.innerHTML = `
-        <button class="lightbox_close">Fermer</button>
-        <button class="lightbox_next">Suivant</button>
-        <button class="lightbox_prev">Précédent</button>
+        <button aria-label="bouton fermer" class="lightbox_close">Fermer</button>
+        <button aria-label="bouton suivant" class="lightbox_next">Suivant</button>
+        <button aria-label="bouton précédent" class="lightbox_prev">Précédent</button>
         <div class="lightbox_container"></div>
     `
     dom.querySelector('.lightbox_close').addEventListener('click', this.close.bind(this))

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet" type="text/css" media="all">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="SHORTCUT ICON" href="http://yann.wattier.free.fr/Block.ico" />
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -11,37 +12,38 @@
     <title>Fisheye</title>
 </head>
 <body>
-    <!-- skip navigation -->
-    <ul class="skip-links">
-        <li><a href="#logo">       Sauter vers le logo</a></li>
-        <li><a href="#titre">      Sauter vers le titre</a></li>
-        <li><a href="#main_nav">   Sauter vers tri photo par style</a></li>
-        <li><a href="#articles">   Sauter vers les photographes</a></li>
-        <li><a href="#index.html"> Retour vers page accueil</a></li>
-    </ul>
-    <!-- ================================== HEADER -->
-    <header role="banner">
-        <!-- 1 - interactif -->
-        <a href="#" class="btn_backTop">Passer au contenu</a>
-        <!-- 2 - logo -->
-        <a href="index.html" aria-label="lien vers page accueil">
-            <img src="./img/FishEyeLogo.svg" alt="logo fisheye" id="logo" role="img" />
-        </a>
-        <!-- 3 - tag tris -->
-        <nav id="main_nav" class="main_nav" aria-label="navigation principale" role="menu"></nav>
+    <div class="container">
+        <!-- skip navigation -->
+        <ul class="skip-links">
+            <li><a href="#logo">       Sauter vers le logo</a></li>
+            <li><a href="#titre">      Sauter vers le titre</a></li>
+            <li><a href="#main_nav">   Sauter vers tri photo par style</a></li>
+            <li><a href="#articles">   Sauter vers les photographes</a></li>
+            <li><a href="#index.html"> Retour vers page accueil</a></li>
+        </ul>
+        <!-- ================================== HEADER -->
+        <header role="banner">
+            <!-- 1 - interactif -->
+            <a href="#" class="btn_backTop">Passer au contenu</a>
+            <!-- 2 - logo -->
+            <a href="index.html" aria-label="lien vers page accueil">
+                <img src="./img/FishEyeLogo.svg" alt="logo fisheye" id="logo" role="img" />
+            </a>
+            <!-- 3 - tag tris -->
+            <nav id="main_nav" class="main_nav" aria-label="navigation principale"></nav>
 
-    </header>
-    <!-- ================================== MAIN -->
-    <main role="main">
+        </header>
+        <!-- ================================== MAIN -->
+        <main role="main">
 
-        <!-- 4 - H1 -->
-        <div class="bloc_h1">
-            <h1 id="titre" tabindex="0" class="h1_index">Nos photographes</h1>
-        </div>
-        
+            <!-- 4 - H1 -->
+            <div class="bloc_h1">
+                <h1 id="titre" tabindex="0" class="h1_index">Nos photographes</h1>
+            </div>
+            
+            <section role="menu" id="articles" class="article_container"></section>
 
-        <section id="articles" class="article_container"></section>
-
-    </main>
+        </main>
+    </div>
 </body>
 </html>

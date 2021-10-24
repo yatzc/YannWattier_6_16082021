@@ -67,10 +67,17 @@ label {
 body {
     font-family: 'DM Sans', sans-serif;
     background-color: #FFFFFF;
-    width: 70%;
     margin: 2em auto;
+    width: 70%;
     position: relative;
 }
+
+/* .container {
+    max-width: 1600px;
+    margin: 2em auto;
+    width: 70%;
+    position: relative;
+} */
 
 header {
     width: 100%;
@@ -86,7 +93,7 @@ main {
     h1 { font-size: 14px; text-align: center; }
     h3 { font-size: 12px; }
     body {
-        width: 90%;
+        /* width: 90%; */
     }
 }
 @media screen and (max-width: 700px) {
@@ -394,7 +401,7 @@ nav li {
 .identity_card {
     display: flex;
     justify-content: space-between;
-    padding: 2em 4em;
+    /* padding: 2em 4em; */
     background: #FAFAFA;
 }
 .identity_card #photo_photographer {
@@ -451,8 +458,8 @@ nav li {
 }
 @media screen and (max-width: 700px) {
     .identity_card {
-        /* justify-content: none; */
-        padding: 1em;
+        justify-content: space-around;
+        /* padding: 1em 1em 1em 0; */
     }
     .identity_card_contact {
         width: 100px;
@@ -480,7 +487,14 @@ nav li {
 }
 /* #endregion == identity */
 
+
+
+
+
 /* #region == SELECT */
+
+
+/* 
 button, li {
     font-family: DM Sans, sans-serif;
     font-size: 18px;
@@ -503,9 +517,9 @@ button, li {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
+} */
 
-.dropdown .dropdown-toggle {
+/* .dropdown .dropdown-toggle {
     appearance: none;
     background: #901C1C;
     color: #fff;
@@ -520,7 +534,6 @@ button, li {
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: pointer;
-    /* outline: none; */
 }
 .dropdown .dropdown-toggle:hover,
 .dropdown .dropdown-toggle:focus {
@@ -538,9 +551,9 @@ button, li {
     height: 50%;
     transform: rotate(180deg);
     transition: transform .3s ease-in-out;
-}
+} */
 
-.dropdown .dropdown-toggle.active::after {
+/* .dropdown .dropdown-toggle.active::after {
     z-index: 80;
     transform: rotate(360deg);
     transition: transform .3s ease-in-out;
@@ -567,9 +580,9 @@ button, li {
 
 .dropdown .dropdown-menu[aria-expanded="true"] {
     visibility: visible;
-}
+} */
 
-.dropdown .dropdown-menu > li {
+/* .dropdown .dropdown-menu > li {
     height: 53px;
     display: block;
     align-items: center;
@@ -592,7 +605,180 @@ button, li {
     .portfolio_select {
         margin: 1em;
     }
+} */
+
+
+
+
+
+
+
+
+
+
+
+/* #region == SELECT II */
+/* .css-select,
+.css-select *,
+.css-select *::before,
+.css-select *::after {
+    box-sizing: border-box;
+} */
+
+
+button, li {
+    font-family: DM Sans, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
 }
+.portfolio {
+    margin: 2em 2em 1em 2em;
+}
+
+.portfolio_select {
+    display: flex;
+    align-items: center;
+    
+}
+
+.css-select {
+    position: relative;
+}
+
+/* arrow */
+.css-select:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(50% - 0.5rem);
+    right: 30px;
+    width: 10px;
+    height: 10px;
+    border: 0 solid #fff;
+    border-width: 0 0.225rem 0.225rem 0;
+    transform: rotate(45deg);
+    transition: top 0.3s ease, transform 0.3s ease;
+    will-change: top;
+    pointer-events: none;
+}
+.css-select:focus-within:after {
+    top: calc(50% - 0.25rem);
+    transform: rotate(225deg);
+}
+/* button select */
+.css-select__selected {
+    display: block;
+    margin: 0;
+    /* padding: 0.75rem 2rem 0.75rem 1rem; */
+    width: 100%;
+    font-family: DM Sans, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    border: none;
+    border-radius: 5px;
+    background: #901C1C;
+    box-shadow: 0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    outline: none !important;
+    width: 170px;
+    height: 64px;
+    padding-left: 20px;
+}
+/* dropdown */
+.css-select__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 9.75rem;
+    background: #901C1C;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
+    transform: translateY(-0.25rem);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+    overflow: auto;
+    z-index: 9999;
+}
+
+
+.css-select__option .css-select__dropdown[aria-expanded="true"] {
+    visibility: visible;
+}
+
+
+
+.css-select__dropdown::-webkit-scrollbar {
+    width: 0.5rem;
+}
+.css-select__dropdown::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+}
+.css-select__dropdown::-webkit-scrollbar-thumb {
+    background: #535353;
+    border-radius: 5px;
+}
+.css-select__dropdown::-webkit-scrollbar-thumb:hover {
+    background: #717171;
+}
+.css-select:focus-within .css-select__dropdown {
+    /* transform: translateY(0.75rem); */
+    opacity: 1;
+    visibility: visible;
+}
+.css-select__option {
+    display: block;
+    margin: 0;
+    padding: 0.5rem;
+    padding-left: 20px;
+    width: 100%;
+    font-family: DM Sans, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    text-align: left;
+    line-height: 1.2;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    transition: background 0.3s ease;
+    cursor: pointer;
+    outline: none !important;
+}
+
+.css-select__selected:hover,
+.css-select__selected:focus,
+.css-select__option:hover,
+.css-select__option:focus {
+    color: #000000;
+    background: #D3573C;
+}
+
+@media screen and (max-width: 900px) {
+    .portfolio_select {
+        margin: 1em;
+    }
+}
+/* #endregion == SELECT II */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* #endregion ==== SELECT */
 
@@ -669,7 +855,7 @@ button, li {
 
 .photo_article video,
 .photo_article img {
-    width: 350px;
+    width: 100%;
     height: 300px;
     object-fit: cover;
     border-radius: 5px;
@@ -719,6 +905,7 @@ button, li {
         display: none;
     }
     .photo_article {
+        width: 100%;
         margin: 2em auto;
     }
 }
@@ -754,7 +941,6 @@ button, li {
     height: 100%;
     width: 100%;
     overflow: auto;
-    /* background-color: white; */
 }
 .bground h1 {
     font-size: 50px;
@@ -794,7 +980,6 @@ button, li {
 input {
     padding: 8px;
     border: 0.8px solid #ccc;
-    /* outline: none; */
 }
 .text-control {
     margin: 0;
@@ -813,7 +998,7 @@ input {
     margin: 1em 0;
 }
 
-/* message error */
+/* messages good/error */
 .formData small {
     font-size: 16px;
 }
@@ -994,7 +1179,7 @@ video::cue(v[voice=narrator]) {
 
 /* #endregion */
 
-/* #region ========== ARIA */
+/* #region ========== SKIP ARIA */
 .skip-links {
     margin: 0;
     padding: 0;

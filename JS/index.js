@@ -36,7 +36,7 @@ const fetchSearch = async() => {
 // #region ============ Affichage des photographes
             function tags(tag) {
                 return `
-                <ul role="group" class="tag-list">
+                <ul role="menu" class="tag-list">
                     ${tag.map(tag => `<li role="menuitem"><a href="#" class="btn_tag" data-filter="${tag}" >#${tag}</a></li>`).join("")}
                 </ul>
                 `;
@@ -44,7 +44,7 @@ const fetchSearch = async() => {
 
             function photographerTemplate(photographer) {
                 return `
-                <article role="menu" class="article_photographer ${photographer.tags.join(" ")}" id="${photographer.id}">
+                <article role="menuitem" class="article_photographer ${photographer.tags.join(" ")}" id="${photographer.id}">
                     <a href="photographer.html?id=${photographer.id}">
                         <img role="img" alt="photo de ${photographer.name}" class="photo__photographer" src="./Photos/Photographers_ID_Photos/${photographer.portrait}">
                         <h2>${photographer.name}</h2>

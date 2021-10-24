@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet" type="text/css" media="all">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="SHORTCUT ICON" href="http://yann.wattier.free.fr/Block.ico" />
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,104 +15,116 @@
     <title id="onglet">Photographe</title>
 </head>
 <body>
-    <!-- skip navigation -->
-    <ul class="skip-links">
-        <li><a href="#logo_photographer">Sauter vers le logo</a></li>
-        <li><a href="#identity_card">    Sauter vers identitée du photographe</a></li>
-        <li><a href="#btn_contact">      Sauter vers contacter photographe</a></li>
-        <li><a href="#filter-box">       Sauter vers tri photo par style</a></li>
-        <li><a href="#dropdown-toggle">  Sauter vers tri photo par ordre</a></li>
-        <li><a href="#portfolio_photos"> Sauter vers média du photographe</a></li>
-    </ul>
-    <!-- =================================================== HEADER -->
-    <header role="banner">
-        <a href="index.html" aria-label="lien vers page accueil">
-            <img role="img" src="./img/FishEyeLogo.svg" alt="logo fisheye" id="logo_photographer" />
-        </a>
-    </header>
-    <!-- =================================================== MAIN -->
-    <main id="main_container" role="main" aria-hidden="false">
-        <!-- ========================== photographer identity -->
-        <section id="identity_card" class="identity_card">
-            <div class="identity_card_contact">
-                <div class="identity_card_text">
-                    <h1 aria-label="nom du photographe" id="name" tabindex="0"></h1>
-                    <h2 aria-label="localité du photographe" id="place" tabindex="0"></h2>
-                    <p  aria-label="dicton du photographe" id="tagline" tabindex="0"></p>
-                    <!-- TAGS sort -->
-                    <div role="menu" aria-label="filtre des photos" id="filter-box" class="filter-box"></div>
+    <div class="container">
+        <!-- skip navigation -->
+        <ul class="skip-links">
+            <li><a href="#logo_photographer">Sauter vers le logo</a></li>
+            <li><a href="#identity_card">    Sauter vers identitée du photographe</a></li>
+            <li><a href="#btn_contact">      Sauter vers contacter photographe</a></li>
+            <li><a href="#filter-box">       Sauter vers tri photo par style</a></li>
+            <li><a href="#dropdown-toggle">  Sauter vers tri photo par ordre</a></li>
+            <li><a href="#portfolio_photos"> Sauter vers média du photographe</a></li>
+        </ul>
+        <!-- =================================================== HEADER -->
+        <header id="banner" role="banner">
+            <a href="index.html" aria-label="lien vers page accueil">
+                <img role="img" src="./img/FishEyeLogo.svg" alt="logo fisheye" id="logo_photographer" />
+            </a>
+        </header>
+        <!-- =================================================== MAIN -->
+        <main id="main_container" role="main" aria-hidden="false">
+            <!-- ========================== photographer identity -->
+            <section id="identity_card" class="identity_card">
+                <div class="identity_card_contact">
+                    <div class="identity_card_text">
+                        <h1 aria-label="nom du photographe" id="name" tabindex="0"></h1>
+                        <h2 aria-label="localité du photographe" id="place" tabindex="0"></h2>
+                        <p  aria-label="dicton du photographe" id="tagline" tabindex="0"></p>
+                        <!-- TAGS sort -->
+                        <div role="menu" aria-label="filtre des photos" id="filter-box" class="filter-box"></div>
+                    </div>
+                    <button id="btn_contact" class="btn_contact">Contactez-moi</button>
                 </div>
-                <button id="btn_contact" class="btn_contact">Contactez-moi</button>
-            </div>
-            <img role="img" src="" alt="" id="photo_photographer">
-        </section>
+                <img role="img" src="" alt="" id="photo_photographer">
+            </section>
 
-        <!-- ========================== photographer portfolio -->
-        <section class="portfolio">
-            <!-- =========== SELECT -->
-            <div id="portfolio_select" class="portfolio_select">
-                <label class="focus_text_sort">Trier par</label>
-                <div class="dropdown" role="menu">
-                    <button tabindex="-1" class="dropdown-toggle" type="button" aria-haspopup="true">    
-                        Select :
-                    </button>
-                    <ul role="listbox" class="dropdown-menu" aria-expanded="false">
-                        <li role="menuitem" aria-label="Trier par popularité" tabindex="0">Popularité</li>
-                        <li role="menuitem" aria-label="Trier par date" tabindex="0">Date</li>
-                        <li role="menuitem" aria-label="Trier par titre" tabindex="0">Titre</li>
-                    </ul>
+            <!-- ========================== photographer portfolio -->
+            <section id="portfolio" class="portfolio">
+                <!-- =========== SELECT -->
+                <div id="portfolio_select" class="portfolio_select">
+                    <label class="focus_text_sort">Trier par</label>
+                    <!-- <div class="dropdown">
+                        <button role="button" tabindex="-1" class="dropdown-toggle" type="button" aria-haspopup="listbox">    
+                            Select :
+                        </button>
+                        <ul role="listbox" class="dropdown-menu" aria-labelledby="focus_text_sort">
+                            <li aria-label="Trier par popularité"><button tabindex="0" >Popularité</button></li>
+                            <li aria-label="Trier par date"><button tabindex="0" >Date</button></li>
+                            <li aria-label="Trier par titre"><button tabindex="0" >Titre</button></li>
+                        </ul>
+                    </div> -->
+                    <div class="css-select">
+                        <input type="hidden" name="select1" value="" data-css-select="hidden" />
+                        <input type="text" class="css-select__selected" value="Select :" aria-label="Select 1" readonly data-css-select="selected" aria-haspopup="listbox" />
+                        <div role="listbox" class="css-select__dropdown" aria-labelledby="focus_text_sort">
+                            <button type="button" class="css-select__option" data-css-select="Popularité" aria-label="Trier par popularité"  onclick="cssSelect(this);">Popularité</button>
+                            <button type="button" class="css-select__option" data-css-select="Date" aria-label="Trier par date" onclick="cssSelect(this);">Date</button>
+                            <button type="button" class="css-select__option" data-css-select="Titre" aria-label="Trier par titre" onclick="cssSelect(this);">Titre</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
 
-        <aside class="bloc_counter">
-            <p tabindex="0" class="count">0</p>
-            <p tabindex="0" class="price"></p>
-        </aside>
+            </section>
 
-        <!-- =========== modal Lightbox -->
-        <section role="dialog" aria-hidden="true" id="portfolio_photos" class="portfolio_container">
-        </section>
+            <aside id="bloc_counter" class="bloc_counter">
+                <p class="count">0</p>
+                <p class="price"></p>
+            </aside>
 
-        <!-- ========================== modal FORM -->
-        <section class="bground" role="dialog" aria-hidden="true">
-            <div class="content" aria-label="formulaire de contact">
-                <h1>Contacter-moi</h1>
-                <span tabindex="0" aria-label="bouton fermer" class="close" id="closeform"></span>
-                <div class="modal-body">
-                    <form action="photographer.html" method="GET" id="contactForm">
-                        <!-- garder id= user -->
-                        <input type="hidden" id="id"  name="id" value="243" />
-                        <div class="formData noBr">
-                            <label tabindex="0" for="first">Prénom</label>
-                            <input tabindex="0" aria-required="true" aria-invalid="false" class="text-control" value="" type="text" id="first" name="first" placeholder="Ecrire votre prénom ici" />
-                            <small id="smallFirst"></small>
-                        </div>
-                        <div class="formData noBr">
-                            <label tabindex="0" for="last">Nom</label>
-                            <input tabindex="0" aria-required="true" aria-invalid="false" class="text-control" type="text" id="last" name="last" placeholder="Ecrire votre nom ici" />
-                            <small id="smallLast"></small>
-                        </div>
-                        <div class="formData noBr">
-                            <label tabindex="0" for="email">Email</label>
-                            <input tabindex="0" aria-required="true" aria-invalid="false" class="text-control" type="email" id="email" name="email" placeholder="Ecrire votre email ici" />
-                            <small id="smallEmail"></small>
-                        </div>
-                        <div class="formData noBr">
-                            <label tabindex="0" for="message">Votre message</label>
-                            <textarea aria-required="true" aria-invalid="false" class="text-control" id="message" name="textarea" placeholder="Ecrire votre message ici"></textarea>
-                            <small id="smallTextarea"></small>
-                        </div>
-                        
-                        <!-- btn validate form -->
-                        <input aria-label="bouton d'envoi" class="btn-submit" id="btn_message" type="submit" value="Envoyer" />
-                    </form>
+            <!-- =========== modal Lightbox -->
+            <section role="dialog" aria-hidden="true" id="portfolio_photos" class="portfolio_container">
+            </section>
+
+            <!-- ========================== modal FORM -->
+            <section class="bground" role="dialog" aria-hidden="true">
+                <div class="content" aria-label="formulaire de contact">
+                    <h1>Contacter-moi</h1>
+                    <span tabindex="0" aria-label="bouton fermer" class="close" id="closeform"></span>
+                    <div class="modal-body">
+                        <form action="photographer.html" method="GET" id="contactForm">
+                            <!-- garder id= user -->
+                            <input type="hidden" id="id"  name="id" value="243" />
+                            <div class="formData noBr">
+                                <label for="first">Prénom</label>
+                                <input aria-required="true" aria-invalid="false" class="text-control" value="" type="text" id="first" name="first" placeholder="Ecrire votre prénom ici" />
+                                <small id="smallFirst"></small>
+                            </div>
+                            <div class="formData noBr">
+                                <label for="last">Nom</label>
+                                <input aria-required="true" aria-invalid="false" class="text-control" type="text" id="last" name="last" placeholder="Ecrire votre nom ici" />
+                                <small id="smallLast"></small>
+                            </div>
+                            <div class="formData noBr">
+                                <label for="email">Email</label>
+                                <input aria-required="true" aria-invalid="false" class="text-control" type="email" id="email" name="email" placeholder="Ecrire votre email ici" />
+                                <small id="smallEmail"></small>
+                            </div>
+                            <div class="formData noBr">
+                                <label for="message">Votre message</label>
+                                <textarea aria-required="true" aria-invalid="false" class="text-control" id="message" name="textarea" placeholder="Ecrire votre message ici"></textarea>
+                                <small id="smallTextarea"></small>
+                            </div>
+                            
+                            <!-- btn validate form -->
+                            <input aria-label="bouton d'envoi" class="btn-submit" id="btn_message" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- </section> -->
-    </main>
+        </main>
+    </div>
+    
     
 </body>
 </html>
