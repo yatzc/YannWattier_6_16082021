@@ -1,0 +1,25 @@
+{
+  "name": "YannWattier_6_16082021",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "^8.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --max-warnings=0 ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yatzc/YannWattier_6_16082021.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yatzc/YannWattier_6_16082021/issues"
+  },
+  "homepage": "https://github.com/yatzc/YannWattier_6_16082021#readme"
+}

@@ -53,17 +53,8 @@
                 <!-- =========== SELECT -->
                 <div id="portfolio_select" class="portfolio_select">
                     <label class="focus_text_sort">Trier par</label>
-                    <!-- <div class="dropdown">
-                        <button role="button" tabindex="-1" class="dropdown-toggle" type="button" aria-haspopup="listbox">    
-                            Select :
-                        </button>
-                        <ul role="listbox" class="dropdown-menu" aria-labelledby="focus_text_sort">
-                            <li aria-label="Trier par popularité"><button tabindex="0" >Popularité</button></li>
-                            <li aria-label="Trier par date"><button tabindex="0" >Date</button></li>
-                            <li aria-label="Trier par titre"><button tabindex="0" >Titre</button></li>
-                        </ul>
-                    </div> -->
-                    <div class="css-select">
+                    
+                    <div class="css-select" id="select" aria-expanded="false">
                         <input type="hidden" name="select1" value="" data-css-select="hidden" />
                         <input type="text" class="css-select__selected" value="Select :" aria-label="Select 1" readonly data-css-select="selected" aria-haspopup="listbox" />
                         <div role="listbox" class="css-select__dropdown" aria-labelledby="focus_text_sort">

@@ -3,11 +3,11 @@
 // #region PAGE index
 // APPEL PHOTOGATHER JSON
 const fetchSearch = async() => {
-    let photographer_card = await fetch('./data/FishEyeData.json')
+    fetch("./data/FishEyeData.json")
         .then(response => { return response.json(); })
         .then(data => {
 
-// #region ============ GET data média of JSON
+            // #region ============ GET data média of JSON
             let mediaId             = [];
             let mediaPhotographerId = [];
             let mediaTitle          = [];
@@ -19,21 +19,21 @@ const fetchSearch = async() => {
 
 
             // function getDataPhotographer() {
-                data.photographers.forEach((elt, i) => {
-                    mediaId[i]             = elt.id;
-                    mediaPhotographerId[i] = elt.photographerId;
-                    mediaTitle[i]          = elt.title;
-                    mediaImage[i]          = elt.image;
-                    mediaTags[i]           = elt.tags;
-                    mediaLikes[i]          = elt.likes;
-                    mediaDate[i]           = elt.date;
-                    mediaPrice[i]          = elt.price;
-                });
+            data.photographers.forEach((elt, i) => {
+                mediaId[i]             = elt.id;
+                mediaPhotographerId[i] = elt.photographerId;
+                mediaTitle[i]          = elt.title;
+                mediaImage[i]          = elt.image;
+                mediaTags[i]           = elt.tags;
+                mediaLikes[i]          = elt.likes;
+                mediaDate[i]           = elt.date;
+                mediaPrice[i]          = elt.price;
+            });
             // }
                 
-// #endregion ============ Récupération des média du JSON
+            // #endregion ============ Récupération des média du JSON
 
-// #region ============ Affichage des photographes
+            // #region ============ Affichage des photographes
             function tags(tag) {
                 return `
                 <ul role="menu" class="tag-list">
@@ -62,24 +62,24 @@ const fetchSearch = async() => {
             document.getElementById("articles").innerHTML = `
                 ${data.photographers.map(photographerTemplate).join("")}        
             `;
-// #endregion ============ Affichage des photographes
+            // #endregion ============ Affichage des photographes
 
-// #region ============ Affichage des main_nav tags
+            // #region ============ Affichage des main_nav tags
             // concat les array des tags en un seul array "allTags"
             let allTags = mediaTags.flat();
             // supprime les doublons du array "allTags"
             let uniqueTags = [...new Set(allTags)];
 
             document.querySelector("#main_nav").innerHTML = tags(uniqueTags);
-// #endregion ============  Affichage des tags
+            // #endregion ============  Affichage des tags
 
-// #region ============ TAGS photo style
-            const btns = document.querySelectorAll('.btn_tag');
-            const storePhoto = document.querySelectorAll('.article_photographer');
+            // #region ============ TAGS photo style
+            const btns = document.querySelectorAll(".btn_tag");
+            const storePhoto = document.querySelectorAll(".article_photographer");
 
             for (let i = 0; i < btns.length; i++) {
 
-                btns[i].addEventListener('click', (e) => {
+                btns[i].addEventListener("click", (e) => {
                     e.preventDefault();
                     
                     const filter = e.target.dataset.filter;
@@ -87,20 +87,20 @@ const fetchSearch = async() => {
                     
                     storePhoto.forEach((product)=> {
                         if (!filter){
-                            product.style.display = 'block';
+                            product.style.display = "block";
                         } else {
                             if (product.classList.contains(filter)){
-                                product.style.display = 'block';
+                                product.style.display = "block";
                             } else {
-                                product.style.display = 'none';
+                                product.style.display = "none";
                             }
                         }
                     });
                 });
-            };
-// #endregion ============ TAGS photo style
-        })
-}
+            }
+        // #endregion ============ TAGS photo style
+        });
+};
 // #endregion PAGE index
 
 
@@ -108,7 +108,7 @@ const fetchSearch = async() => {
 // import { openBlocPass } from './JS/index/backOnTop.mjs';
 const openBlocPass = document.querySelector(".btn_backTop");
 
-window.addEventListener('scroll', () => {
+window.addEventListener("scroll", () => {
     // destructuring : ici "scrollTop" == position du scroll vertical
     const {scrollTop} = document.documentElement;
     console.log(scrollTop);
@@ -121,7 +121,7 @@ window.addEventListener('scroll', () => {
         //changer "display:block;" par "display:none;" à btn_backTop
         openBlocPass.style.display = "none";
     }
-})
+});
 // #endregion scroll action
 
 fetchSearch();
