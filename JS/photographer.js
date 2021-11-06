@@ -494,9 +494,9 @@ class Lightbox {
     static init() {
         // ajout src de chaque image du portfolio dans arraySrc
         const arraySrc = Array.from(document.querySelectorAll("a[href$='.jpg'], a[href$='.mp4']"));
-    console.log(arraySrc);
+    // console.log(arraySrc);
         const gallerySrc = arraySrc.map(link => link.getAttribute("href"));
-    console.log(gallerySrc);
+    // console.log(gallerySrc);
         // ajout alt de chaque image du portfolio dans arrayAlt
         const arrayAlt = Array.from(document.querySelectorAll("a[href$='.jpg'], a[href$='.mp4']"));
         const galleryAlt = arrayAlt.map(link => link.getAttribute("aria-label"));
@@ -508,78 +508,12 @@ class Lightbox {
     }
 
     loadMedia(srcTxt, altTxt) {
-        const extension = srcTxt.split(".").pop();
-        this.srcTxt = null;
-        this.altTxt = null;
+        // const extension = srcTxt.split(".").pop();
+        // this.srcTxt = null;
+        // this.altTxt = null;
 
         // console.log(this.element.querySelector('.lightbox_container'))
 
-
-        // #region ============ FACTORY
-        class MyMedia {
-            createMedia(srcTxt, altTxt) {
-
-            }
-        }
-
-        class MyImage extends MyMedia {
-            createMedia(srcTxt, altTxt) {
-            // console.log(Lightbox.element.querySelector('.lightbox_container').bind(Lightbox))
-
-                console.log(`<img src="${srcTxt}" alt="${altTxt}" />`);
-
-
-                const image = document.createElement("img");
-
-                const containerImage = lightbox.element.querySelector(".lightbox_container");
-                const loader = document.createElement("div");
-                loader.classList.add("lightbox_loader");
-                containerImage.innerHTML = "";
-
-                containerImage.appendChild(loader);
-                
-                image.onload = () => {
-                    this.srcTxt = srcTxt;
-                    this.altTxt = altTxt;
-                    containerImage.removeChild(loader);
-                    containerImage.appendChild(image);
-                };
-                image.src = srcTxt;
-                image.alt = altTxt;
-
-
-            }
-        }
-
-        class MyVideo extends MyMedia {
-            createMedia(srcTxt, altTxt) {
-
-
-                console.log(`<video src="${srcTxt}" alt="${altTxt}"></video>`);
-
-
-                // const video = document.createElement('video');
-                // video.controls = true;
-                // // ajout des sous titre de la video
-                // video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
-                // const containerVideo = Lightbox.element.querySelector('.lightbox_container');
-                // const loader = document.createElement('div');
-                // loader.classList.add('lightbox_loader');
-                // containerVideo.innerHTML = '';
-
-                // containerVideo.appendChild(loader);
-                
-                // video.onloadstart  = () => {
-                //   this.srcTxt = srcTxt;
-                //   containerVideo.removeChild(loader);
-                //   containerVideo.appendChild(video);
-                // }
-                // video.src = srcTxt;
-                // video.alt = altTxt;
-
-
-            }
-        }
 
         function factory(srcTxt, altTxt) {
             const ext = srcTxt.split(".").pop();
@@ -590,13 +524,10 @@ class Lightbox {
                 return new MyVideo();
             }
         }
-
         const imageDe = factory(srcTxt, altTxt);
         imageDe.createMedia(srcTxt, altTxt);
+        
 
-
-
-        // #endregion ============ FACTORY
 
         // if(extension == "jpg") {
         //     // const image = new Image();
@@ -725,3 +656,68 @@ class Lightbox {
     }
 }
 // #endregion ============ LIGHTBOX
+
+
+
+
+// #region ============ FACTORY
+class MyMedia {
+    createMedia(srcTxt, altTxt) {
+
+    }
+}
+
+class MyImage extends MyMedia {
+    createMedia(srcTxt, altTxt) {
+        console.log(Lightbox.element.querySelector(".lightbox_container").bind(Lightbox));
+
+        // console.log(`<img src="${srcTxt}" alt="${altTxt}" />`);
+
+        const image = document.createElement("img");
+
+        const containerImage = lightbox.element.querySelector(".lightbox_container");
+        const loader = document.createElement("div");
+        loader.classList.add("lightbox_loader");
+        containerImage.innerHTML = "";
+
+        containerImage.appendChild(loader);
+        
+        image.onload = () => {
+            this.srcTxt = srcTxt;
+            this.altTxt = altTxt;
+            containerImage.removeChild(loader);
+            containerImage.appendChild(image);
+        };
+        image.src = srcTxt;
+        image.alt = altTxt;
+    }
+}
+
+class MyVideo extends MyMedia {
+    createMedia(srcTxt, altTxt) {
+
+        // console.log(`<video src="${srcTxt}" alt="${altTxt}"></video>`);
+
+        const video = document.createElement("video");
+        video.controls = true;
+        // ajout des sous titre de la video
+        video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
+        const containerVideo = lightbox.element.querySelector(".lightbox_container");
+        const loader = document.createElement("div");
+        loader.classList.add("lightbox_loader");
+        containerVideo.innerHTML = "";
+
+        containerVideo.appendChild(loader);
+        
+        video.onloadstart  = () => {
+            this.srcTxt = srcTxt;
+            containerVideo.removeChild(loader);
+            containerVideo.appendChild(video);
+        };
+        video.src = srcTxt;
+        video.alt = altTxt;
+
+
+    }
+}
+// #endregion ============ FACTORY
