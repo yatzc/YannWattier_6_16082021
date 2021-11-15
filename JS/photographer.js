@@ -61,6 +61,7 @@ if (searchParams.has("id")) {
             // #region ============ PORTFOLIO
             // media du photographe
             var theMediasOfPhotographer = data.media.filter(donnees => donnees.photographerId == photographeId);
+            console.log(theMediasOfPhotographer);
             window.altTxt = data.description;
 
             // #region ============ SELECT
@@ -111,7 +112,7 @@ if (searchParams.has("id")) {
             // #region ====== Le tri par SELECT
     
             function mediaSort(styleMedia) {
-                if (styleMedia == "") { theMediasOfPhotographer = theMediasOfPhotographer; }
+                if (styleMedia == "") { theMediasOfPhotographer; }
                 else if (styleMedia == "Popularité") { theMediasOfPhotographer.sort((a, b) => b.likes - a.likes); }
                 else if (styleMedia == "Date")       { theMediasOfPhotographer.sort((a, b) => new Date(b.date) - new Date(a.date)); }
                 else if (styleMedia == "Titre")      { theMediasOfPhotographer.sort(function (a, b) {
@@ -125,7 +126,8 @@ if (searchParams.has("id")) {
                 
                 document.getElementById("portfolio_photos").innerHTML = `${theMediasOfPhotographer.map(mediaTemplate).join("")}`;
 
-                Lightbox.init();   
+                Lightbox.init(); 
+  
                 // #endregion ============ Affichage photo card
         
             }
@@ -137,7 +139,8 @@ if (searchParams.has("id")) {
                 return `
                     <article class="photo_article ${mediaPhotographer.tags}">
                       <div class="photo_flex">
-                        ${toggleMedia(mediaPhotographer)}
+                      
+                      ${factory(mediaPhotographer)}  
                         <div class="photo_foot">
                           <p class="media_text">${mediaPhotographer.title}</p>
                           <div class="media_likes">
@@ -149,15 +152,65 @@ if (searchParams.has("id")) {
                     </article>
                     `;
             }
-            // Fonction qui affiche les photos et fait lien avec soit video soit photo en fonction du media json
-            function toggleMedia(isMedia) {
-                if (isMedia.image) { 
-                    return (`<a aria-label="${isMedia.description}" href="./Photos/${photographeId}/${isMedia.image}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${isMedia.image}"></a>`); }
-                else if (isMedia.video) {
-                    let file = isMedia.video;
-                    file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
-                    return (`<a aria-label="${isMedia.description}" href="./Photos/${photographeId}/${isMedia.video}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
+
+
+
+            
+
+
+            // #region ============ FACTORY
+            
+            class MyMedia {
+                constructor(media) {
+                    this._media = media;
+                }
+                createMedia() {
+                    console.log(`${this._media.description}`);
+                    `<a href="./Photos/243/${this._media.image}"><img src="./Photos/243/small/${this._media.image}"></a>`;
+                }
             }
+
+            class MyImage extends MyMedia {
+                constructor(media) {
+                    super(media);
+                }
+            }
+
+            class MyVideo extends MyMedia {
+                constructor(media) {
+                    super(media);
+                }
+            }
+
+            function factory(isMedia) {
+
+                // const ext = isMedia.image.split(".").pop();
+
+                switch(isMedia) {
+                case isMedia.image:
+                    return new MyImage();
+                case isMedia.video:
+                    return new MyVideo();
+                }
+            }
+            const imageDe = factory(theMediasOfPhotographer);
+            console.log(imageDe);
+            // imageDe.createMedia(theMediasfPhotographer);
+            // #endregion ============ FACTORY
+
+
+
+
+            // Fonction qui affiche les photos et fait lien avec soit video soit photo en fonction du media json
+            // ${toggleMedia(mediaPhotographer)}
+            // function toggleMedia(isMedia) {
+            //     if (isMedia.image) { 
+            //         return (`<a aria-label="${isMedia.description}" href="./Photos/${photographeId}/${isMedia.image}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${isMedia.image}"></a>`); }
+            //     else if (isMedia.video) {
+            //         let file = isMedia.video;
+            //         file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
+            //         return (`<a aria-label="${isMedia.description}" href="./Photos/${photographeId}/${isMedia.video}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
+            // }
               
             document.getElementById("portfolio_photos").innerHTML = `${theMediasOfPhotographer.map(mediaTemplate).join("")}`;
             // #endregion ============ Affichage photo card
@@ -203,11 +256,6 @@ if (searchParams.has("id")) {
             // display like + price/day
             document.querySelector(".count").innerHTML = totalLikesJSON;
             document.querySelector(".price").innerHTML = identity[0].price + "€/jour";
-
-
-      
-
-
 
             // #endregion ============ LIKES COUNT            
 
@@ -503,7 +551,7 @@ class Lightbox {
 
         arraySrc.forEach(link => link.addEventListener("click", e => {
             e.preventDefault();
-            const lightbox = new Lightbox(e.currentTarget.getAttribute("href"), gallerySrc, e.currentTarget.getAttribute("aria-label"), galleryAlt);
+            new Lightbox(e.currentTarget.getAttribute("href"), gallerySrc, e.currentTarget.getAttribute("aria-label"), galleryAlt);
         }));
     }
 
@@ -512,8 +560,69 @@ class Lightbox {
         // this.srcTxt = null;
         // this.altTxt = null;
 
-        // console.log(this.element.querySelector('.lightbox_container'))
+        console.log(this.element.querySelector(".lightbox_container"));
+        
 
+        // #region ============ FACTORY
+        class MyMedia {
+            createMedia(srcTxt, altTxt) {
+
+            }
+        }
+
+        class MyImage extends MyMedia {
+            createMedia(srcTxt, altTxt) {
+                console.log(this.element.querySelector(".lightbox_container").bind(Lightbox));
+
+                // console.log(`<img src="${srcTxt}" alt="${altTxt}" />`);
+
+                const image = document.createElement("img");
+
+                const containerImage = this.element.querySelector(".lightbox_container");
+                const loader = document.createElement("div");
+                loader.classList.add("lightbox_loader");
+                containerImage.innerHTML = "";
+
+                containerImage.appendChild(loader);
+
+                image.onload = () => {
+                    this.srcTxt = srcTxt;
+                    this.altTxt = altTxt;
+                    containerImage.removeChild(loader);
+                    containerImage.appendChild(image);
+                };
+                image.src = srcTxt;
+                image.alt = altTxt;
+            }
+        }
+
+        class MyVideo extends MyMedia {
+            createMedia(srcTxt, altTxt) {
+
+                // console.log(`<video src="${srcTxt}" alt="${altTxt}"></video>`);
+
+                const video = document.createElement("video");
+                video.controls = true;
+                // ajout des sous titre de la video
+                video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
+                const containerVideo = this.element.querySelector(".lightbox_container");
+                const loader = document.createElement("div");
+                loader.classList.add("lightbox_loader");
+                containerVideo.innerHTML = "";
+
+                containerVideo.appendChild(loader);
+
+                video.onloadstart  = () => {
+                    this.srcTxt = srcTxt;
+                    containerVideo.removeChild(loader);
+                    containerVideo.appendChild(video);
+                };
+                video.src = srcTxt;
+                video.alt = altTxt;
+
+
+            }
+        }
 
         function factory(srcTxt, altTxt) {
             const ext = srcTxt.split(".").pop();
@@ -526,6 +635,80 @@ class Lightbox {
         }
         const imageDe = factory(srcTxt, altTxt);
         imageDe.createMedia(srcTxt, altTxt);
+        // #endregion ============ FACTORY
+
+        // #region ============ FACTORY II
+        // var Factory = function () {
+        //     this.createMedia = function (srcTxt, altTxt) {
+        //         const ext = srcTxt.split(".").pop();
+        //         console.log(ext);
+        //         switch(ext) {
+        //         case "jpg":
+        //             return new MediaImage();
+        //         case "mp4":
+        //             return new MediaVideo();
+        //         }
+        //     };
+        // };
+        
+        // const imageDe = Factory(srcTxt, altTxt);
+        // imageDe.createMedia(srcTxt, altTxt);
+
+        // var MediaImage = function () {
+        //     const image = document.createElement("img");
+        //     //     // image.controls = true;
+        //     const containerImage = this.element.querySelector(".lightbox_container");
+        //     const loader = document.createElement("div");
+        //     loader.classList.add("lightbox_loader");
+        //     containerImage.innerHTML = "";
+
+        //     containerImage.appendChild(loader);
+            
+        //     image.onload = () => {
+        //         this.srcTxt = srcTxt;
+        //         this.altTxt = altTxt;
+        //         containerImage.removeChild(loader);
+        //         containerImage.appendChild(image);
+        //     };
+        //     image.src = srcTxt;
+        //     image.alt = altTxt;
+        // };
+
+        // var MediaVideo = function () {
+        //     const video = document.createElement("video");
+        //     video.controls = true;
+        //     // ajout de sous titre
+        //     video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
+        //     const containerVideo = this.element.querySelector(".lightbox_container");
+        //     const loader = document.createElement("div");
+        //     loader.classList.add("lightbox_loader");
+        //     containerVideo.innerHTML = "";
+
+        //     containerVideo.appendChild(loader);
+          
+        //     video.onloadstart  = () => {
+        //         this.srcTxt = srcTxt;
+        //         containerVideo.removeChild(loader);
+        //         containerVideo.appendChild(video);
+        //     };
+        //     video.src = srcTxt;
+        //     video.alt = altTxt;
+        // };
+
+
+        // function run() {
+
+        //     var medias = [];
+        //     var factory = new Factory();
+
+        //     medias.push(factory.createMedia("jpg"));
+        //     medias.push(factory.createMedia("mp4"));
+
+        //     for (var i = 0, len = medias.length; i < len; i++) {
+        //         medias[i].display();
+        //     }
+        // }
+        // #endregion ============ FACTORY II
         
 
 
@@ -660,64 +843,5 @@ class Lightbox {
 
 
 
-// #region ============ FACTORY
-class MyMedia {
-    createMedia(srcTxt, altTxt) {
-
-    }
-}
-
-class MyImage extends MyMedia {
-    createMedia(srcTxt, altTxt) {
-        console.log(Lightbox.element.querySelector(".lightbox_container").bind(Lightbox));
-
-        // console.log(`<img src="${srcTxt}" alt="${altTxt}" />`);
-
-        const image = document.createElement("img");
-
-        const containerImage = lightbox.element.querySelector(".lightbox_container");
-        const loader = document.createElement("div");
-        loader.classList.add("lightbox_loader");
-        containerImage.innerHTML = "";
-
-        containerImage.appendChild(loader);
-        
-        image.onload = () => {
-            this.srcTxt = srcTxt;
-            this.altTxt = altTxt;
-            containerImage.removeChild(loader);
-            containerImage.appendChild(image);
-        };
-        image.src = srcTxt;
-        image.alt = altTxt;
-    }
-}
-
-class MyVideo extends MyMedia {
-    createMedia(srcTxt, altTxt) {
-
-        // console.log(`<video src="${srcTxt}" alt="${altTxt}"></video>`);
-
-        const video = document.createElement("video");
-        video.controls = true;
-        // ajout des sous titre de la video
-        video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
-        const containerVideo = lightbox.element.querySelector(".lightbox_container");
-        const loader = document.createElement("div");
-        loader.classList.add("lightbox_loader");
-        containerVideo.innerHTML = "";
-
-        containerVideo.appendChild(loader);
-        
-        video.onloadstart  = () => {
-            this.srcTxt = srcTxt;
-            containerVideo.removeChild(loader);
-            containerVideo.appendChild(video);
-        };
-        video.src = srcTxt;
-        video.alt = altTxt;
 
 
-    }
-}
-// #endregion ============ FACTORY
