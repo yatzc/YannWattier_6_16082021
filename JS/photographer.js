@@ -61,7 +61,6 @@ if (searchParams.has("id")) {
             // #region ============ PORTFOLIO
             // media du photographe
             var theMediasOfPhotographer = data.media.filter(donnees => donnees.photographerId == photographeId);
-            console.log(theMediasOfPhotographer);
             window.altTxt = data.description;
 
             // #region ============ SELECT
@@ -134,13 +133,55 @@ if (searchParams.has("id")) {
 
             // #endregion ============ Le tri par SELECT
 
+
+
+            // #region ============ FACTORY
+            class MyMedia {
+                constructor(isMedia) {
+                    this._media = isMedia;
+                }
+                createMedia() {}
+            }
+
+            class MyImage extends MyMedia {
+                constructor(_media) {
+                    super(_media);
+                }
+                createMedia() {
+                    return `<a aria-label="${this._media.description}" href="./Photos/${photographeId}/${this._media.image}"><img role="img" alt="${this._media.description}" role="button" src="./Photos/${photographeId}/small/${this._media.image}"></a>`;
+                }
+                
+            }
+
+            class MyVideo extends MyMedia {
+                constructor(_media) {
+                    super(_media);
+                }
+                createMedia() {
+                    let file = this._media.video;
+                    file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
+                    return `<a aria-label="${this._media.description}" href="./Photos/${photographeId}/${this._media.video}"><img role="img" alt="${this._media.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`;
+                }
+            }
+
+            function factory(isMedia) {
+
+                if(isMedia.image) {
+                    return new MyImage(isMedia);
+                } else if(isMedia.video) {
+                    return new MyVideo(isMedia);
+                } else {
+                    console.log("error");
+                }
+            }
+            // #endregion ============ FACTORY
+
             // #region ====== Affichage photo card
             function mediaTemplate(mediaPhotographer) {
                 return `
                     <article class="photo_article ${mediaPhotographer.tags}">
                       <div class="photo_flex">
-                      
-                      ${factory(mediaPhotographer)}  
+                        ${factory(mediaPhotographer).createMedia()}
                         <div class="photo_foot">
                           <p class="media_text">${mediaPhotographer.title}</p>
                           <div class="media_likes">
@@ -152,65 +193,6 @@ if (searchParams.has("id")) {
                     </article>
                     `;
             }
-
-
-
-            
-
-
-            // #region ============ FACTORY
-            
-            class MyMedia {
-                constructor(media) {
-                    this._media = media;
-                }
-                createMedia() {
-                    console.log(`${this._media.description}`);
-                    `<a href="./Photos/243/${this._media.image}"><img src="./Photos/243/small/${this._media.image}"></a>`;
-                }
-            }
-
-            class MyImage extends MyMedia {
-                constructor(media) {
-                    super(media);
-                }
-            }
-
-            class MyVideo extends MyMedia {
-                constructor(media) {
-                    super(media);
-                }
-            }
-
-            function factory(isMedia) {
-
-                // const ext = isMedia.image.split(".").pop();
-
-                switch(isMedia) {
-                case isMedia.image:
-                    return new MyImage();
-                case isMedia.video:
-                    return new MyVideo();
-                }
-            }
-            const imageDe = factory(theMediasOfPhotographer);
-            console.log(imageDe);
-            // imageDe.createMedia(theMediasfPhotographer);
-            // #endregion ============ FACTORY
-
-
-
-
-            // Fonction qui affiche les photos et fait lien avec soit video soit photo en fonction du media json
-            // ${toggleMedia(mediaPhotographer)}
-            // function toggleMedia(isMedia) {
-            //     if (isMedia.image) { 
-            //         return (`<a aria-label="${isMedia.description}" href="./Photos/${photographeId}/${isMedia.image}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${isMedia.image}"></a>`); }
-            //     else if (isMedia.video) {
-            //         let file = isMedia.video;
-            //         file = file.substr(0, file.lastIndexOf(".")) + ".jpg";
-            //         return (`<a aria-label="${isMedia.description}" href="./Photos/${photographeId}/${isMedia.video}"><img role="img" alt="${isMedia.description}" role="button" src="./Photos/${photographeId}/small/${file}"></a>`); }
-            // }
               
             document.getElementById("portfolio_photos").innerHTML = `${theMediasOfPhotographer.map(mediaTemplate).join("")}`;
             // #endregion ============ Affichage photo card
