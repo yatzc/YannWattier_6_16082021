@@ -1,6 +1,6 @@
 # [OC] PROJET 6
 
-[Ce projet est disponible sur mon site](https://http://yann.wattier.free.fr/openclassrooms/PROJET6/index.html)
+[Ce projet est disponible sur mon site](http://yann.wattier.free.fr/openclassrooms/PROJET6/index.html)
 
 ## Créez un site accessible pour une plateforme de photographes
 
@@ -41,7 +41,7 @@ Après la réunion de lancement, vous voyez un mail de votre cheffe de projet co
 
 Vous commencez par ouvrir les maquettes pour avoir une idée de ce qui doit être fait : 
 
-![Photo page index](https://user.oc-static.com/upload/2020/08/18/15977571210897_image2.png)
+![Photo page index](https://user.oc-static.com/upload/2020/08/18/15977571210897_image2.png "Maquette du site de FishEye")
 
 Lorsque vous commencez à regarder les maquettes, vous recevez un message instantané de Zoé, une développeuse senior que vous admirez beaucoup. Elle vous a encadré et a effectué un grand nombre de vos révisions de code :
 
