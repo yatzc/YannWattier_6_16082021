@@ -133,8 +133,6 @@ if (searchParams.has("id")) {
 
             // #endregion ============ Le tri par SELECT
 
-
-
             // #region ============ FACTORY
             class MyMedia {
                 constructor(isMedia) {
@@ -435,7 +433,7 @@ const validEmail = function (inputEmail) {
 form.textarea.addEventListener("change", function () { validMessage(this); });
 
 const validMessage = function (inputTextarea) {
-    let textareaRegExp = new RegExp("^[a-zA-Z.- ]{2,100}$", "g");
+    let textareaRegExp = new RegExp("[a-z]", "g");
 
     let testTextarea = textareaRegExp.test(inputTextarea.value);
 
@@ -524,9 +522,9 @@ class Lightbox {
     static init() {
         // ajout src de chaque image du portfolio dans arraySrc
         const arraySrc = Array.from(document.querySelectorAll("a[href$='.jpg'], a[href$='.mp4']"));
-    // console.log(arraySrc);
+
         const gallerySrc = arraySrc.map(link => link.getAttribute("href"));
-    // console.log(gallerySrc);
+
         // ajout alt de chaque image du portfolio dans arrayAlt
         const arrayAlt = Array.from(document.querySelectorAll("a[href$='.jpg'], a[href$='.mp4']"));
         const galleryAlt = arrayAlt.map(link => link.getAttribute("aria-label"));
@@ -538,203 +536,53 @@ class Lightbox {
     }
 
     loadMedia(srcTxt, altTxt) {
-        // const extension = srcTxt.split(".").pop();
-        // this.srcTxt = null;
-        // this.altTxt = null;
+        const extension = srcTxt.split(".").pop();
+        this.srcTxt = null;
+        this.altTxt = null;
 
         console.log(this.element.querySelector(".lightbox_container"));
-        
 
-        // #region ============ FACTORY
-        class MyMedia {
-            createMedia(srcTxt, altTxt) {
+        if(extension == "jpg") {
+            // const image = new Image();
+            const image = document.createElement("img");
+            // image.controls = true;
+            const containerImage = this.element.querySelector(".lightbox_container");
+            const loader = document.createElement("div");
+            loader.classList.add("lightbox_loader");
+            containerImage.innerHTML = "";
 
-            }
-        }
-
-        class MyImage extends MyMedia {
-            createMedia(srcTxt, altTxt) {
-                console.log(this.element.querySelector(".lightbox_container").bind(Lightbox));
-
-                // console.log(`<img src="${srcTxt}" alt="${altTxt}" />`);
-
-                const image = document.createElement("img");
-
-                const containerImage = this.element.querySelector(".lightbox_container");
-                const loader = document.createElement("div");
-                loader.classList.add("lightbox_loader");
-                containerImage.innerHTML = "";
-
-                containerImage.appendChild(loader);
-
-                image.onload = () => {
-                    this.srcTxt = srcTxt;
-                    this.altTxt = altTxt;
-                    containerImage.removeChild(loader);
-                    containerImage.appendChild(image);
-                };
-                image.src = srcTxt;
-                image.alt = altTxt;
-            }
-        }
-
-        class MyVideo extends MyMedia {
-            createMedia(srcTxt, altTxt) {
-
-                // console.log(`<video src="${srcTxt}" alt="${altTxt}"></video>`);
-
-                const video = document.createElement("video");
-                video.controls = true;
-                // ajout des sous titre de la video
-                video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
-                const containerVideo = this.element.querySelector(".lightbox_container");
-                const loader = document.createElement("div");
-                loader.classList.add("lightbox_loader");
-                containerVideo.innerHTML = "";
-
-                containerVideo.appendChild(loader);
-
-                video.onloadstart  = () => {
-                    this.srcTxt = srcTxt;
-                    containerVideo.removeChild(loader);
-                    containerVideo.appendChild(video);
-                };
-                video.src = srcTxt;
-                video.alt = altTxt;
-
-
-            }
-        }
-
-        function factory(srcTxt, altTxt) {
-            const ext = srcTxt.split(".").pop();
-            switch(ext) {
-            case "jpg":
-                return new MyImage();
-            case "mp4":
-                return new MyVideo();
-            }
-        }
-        const imageDe = factory(srcTxt, altTxt);
-        imageDe.createMedia(srcTxt, altTxt);
-        // #endregion ============ FACTORY
-
-        // #region ============ FACTORY II
-        // var Factory = function () {
-        //     this.createMedia = function (srcTxt, altTxt) {
-        //         const ext = srcTxt.split(".").pop();
-        //         console.log(ext);
-        //         switch(ext) {
-        //         case "jpg":
-        //             return new MediaImage();
-        //         case "mp4":
-        //             return new MediaVideo();
-        //         }
-        //     };
-        // };
-        
-        // const imageDe = Factory(srcTxt, altTxt);
-        // imageDe.createMedia(srcTxt, altTxt);
-
-        // var MediaImage = function () {
-        //     const image = document.createElement("img");
-        //     //     // image.controls = true;
-        //     const containerImage = this.element.querySelector(".lightbox_container");
-        //     const loader = document.createElement("div");
-        //     loader.classList.add("lightbox_loader");
-        //     containerImage.innerHTML = "";
-
-        //     containerImage.appendChild(loader);
+            containerImage.appendChild(loader);
             
-        //     image.onload = () => {
-        //         this.srcTxt = srcTxt;
-        //         this.altTxt = altTxt;
-        //         containerImage.removeChild(loader);
-        //         containerImage.appendChild(image);
-        //     };
-        //     image.src = srcTxt;
-        //     image.alt = altTxt;
-        // };
+            image.onload = () => {
+                this.srcTxt = srcTxt;
+                this.altTxt = altTxt;
+                containerImage.removeChild(loader);
+                containerImage.appendChild(image);
+            };
+            image.src = srcTxt;
+            image.alt = altTxt;
+        }
 
-        // var MediaVideo = function () {
-        //     const video = document.createElement("video");
-        //     video.controls = true;
-        //     // ajout de sous titre
-        //     video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
-        //     const containerVideo = this.element.querySelector(".lightbox_container");
-        //     const loader = document.createElement("div");
-        //     loader.classList.add("lightbox_loader");
-        //     containerVideo.innerHTML = "";
+        else if(extension == "mp4") {
+            const video = document.createElement("video");
+            video.controls = true;
+            // ajout de sous titre
+            video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
+            const containerVideo = this.element.querySelector(".lightbox_container");
+            const loader = document.createElement("div");
+            loader.classList.add("lightbox_loader");
+            containerVideo.innerHTML = "";
 
-        //     containerVideo.appendChild(loader);
+            containerVideo.appendChild(loader);
           
-        //     video.onloadstart  = () => {
-        //         this.srcTxt = srcTxt;
-        //         containerVideo.removeChild(loader);
-        //         containerVideo.appendChild(video);
-        //     };
-        //     video.src = srcTxt;
-        //     video.alt = altTxt;
-        // };
-
-
-        // function run() {
-
-        //     var medias = [];
-        //     var factory = new Factory();
-
-        //     medias.push(factory.createMedia("jpg"));
-        //     medias.push(factory.createMedia("mp4"));
-
-        //     for (var i = 0, len = medias.length; i < len; i++) {
-        //         medias[i].display();
-        //     }
-        // }
-        // #endregion ============ FACTORY II
-        
-
-
-        // if(extension == "jpg") {
-        //     // const image = new Image();
-        //     const image = document.createElement("img");
-        //     // image.controls = true;
-        //     const containerImage = this.element.querySelector(".lightbox_container");
-        //     const loader = document.createElement("div");
-        //     loader.classList.add("lightbox_loader");
-        //     containerImage.innerHTML = "";
-
-        //     containerImage.appendChild(loader);
-            
-        //     image.onload = () => {
-        //         this.srcTxt = srcTxt;
-        //         this.altTxt = altTxt;
-        //         containerImage.removeChild(loader);
-        //         containerImage.appendChild(image);
-        //     };
-        //     image.src = srcTxt;
-        //     image.alt = altTxt;
-        // }
-
-        // else if(extension == "mp4") {
-        //     const video = document.createElement("video");
-        //     video.controls = true;
-        //     // ajout de sous titre
-        //     video.innerHTML = `<track kind="subtitles" src="${srcTxt}.vtt" srclang="fr" label="Français">`;
-        //     const containerVideo = this.element.querySelector(".lightbox_container");
-        //     const loader = document.createElement("div");
-        //     loader.classList.add("lightbox_loader");
-        //     containerVideo.innerHTML = "";
-
-        //     containerVideo.appendChild(loader);
-          
-        //     video.onloadstart  = () => {
-        //         this.srcTxt = srcTxt;
-        //         containerVideo.removeChild(loader);
-        //         containerVideo.appendChild(video);
-        //     };
-        //     video.src = srcTxt;
-        //     video.alt = altTxt;
-        // }
+            video.onloadstart  = () => {
+                this.srcTxt = srcTxt;
+                containerVideo.removeChild(loader);
+                containerVideo.appendChild(video);
+            };
+            video.src = srcTxt;
+            video.alt = altTxt;
+        }
         
     }
 
@@ -797,7 +645,7 @@ class Lightbox {
      * @param {string} srcTxt URL de l'image
      * @return {HTMLElement}
      */
-    buildDOM(srcTxt) {
+    buildDOM() {
         mainContainer.setAttribute("aria-hidden", "true");
         photoContainer.setAttribute("aria-hidden", "false");
         document.getElementById("identity_card").style.display = "none";
