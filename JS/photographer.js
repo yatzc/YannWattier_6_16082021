@@ -120,14 +120,30 @@ if (searchParams.has("id")) {
                     return  0;
                 });}
 
-                // #region ============ Affichage photo card par tri
-
                 
                 document.getElementById("portfolio_photos").innerHTML = `${theMediasOfPhotographer.map(mediaTemplate).join("")}`;
 
-                Lightbox.init(); 
+                const hearts = document.querySelectorAll(".media_likes button");
+
+                hearts.forEach(heart => { heart.addEventListener("click", isLike); });
+                function isLike() {
+                    this.dataset.like = this.dataset.like == "true" ? "false" : "true";
+                    this.dataset.datanblike = this.dataset.datanblike == 1 ? 0 : 1;
+                
+                    // Get id
+                    let numberLikePhoto = parseInt(document.querySelector(".media_likes p[data-id='"+this.dataset.id+"']").innerHTML);
+                    if(this.dataset.datanblike == 0)
+                        numberLikePhoto--;
+                    else
+                        numberLikePhoto++;
   
-                // #endregion ============ Affichage photo card
+                    // Update on DOM
+                    document.querySelector(".media_likes p[data-id='"+this.dataset.id+"']").innerHTML = numberLikePhoto;
+  
+                    calculateLikes();
+                }
+
+                Lightbox.init();
         
             }
 
@@ -299,7 +315,8 @@ function openBtnForm() {
     document.getElementById("identity_card").style.display = "none";
     document.getElementById("portfolio").style.display = "none";
     document.getElementById("bloc_counter").style.display = "none";
-    document.getElementById("portfolio_photos").style.display = "none";
+    document.getElementById("portfolio_photos").classList.remove("portfolio_container");
+    document.getElementById("portfolio_photos").classList.add("hide");
     document.getElementById("banner").style.display = "none";
     mainContainer.setAttribute("aria-hidden", "true");
     formBg.setAttribute("aria-hidden", "false");
@@ -313,9 +330,10 @@ function closeBtnForm() {
     mainContainer.setAttribute("aria-hidden", "false");
     formBg.setAttribute("aria-hidden", "true");
     document.getElementById("identity_card").style.display = "flex";
-    document.getElementById("portfolio").style.display = "block";
-    document.getElementById("bloc_counter").style.display = "block";
-    document.getElementById("portfolio_photos").style.display = "flex";
+    document.getElementById("portfolio").style.display = "flex";
+    document.getElementById("portfolio_photos").classList.remove("hide");
+    document.getElementById("portfolio_photos").classList.add("portfolio_container");
+    document.getElementById("bloc_counter").style.display = "flex";
     document.getElementById("banner").style.display = "block";
 }
 // ========================================== CLOSE FORM BY KEYCODE
@@ -327,12 +345,11 @@ function checkKeyPress(key) {
         formBg.setAttribute("aria-hidden", "true");
         document.getElementById("identity_card").style.display = "flex";
         document.getElementById("portfolio").style.display = "block";
-        document.getElementById("bloc_counter").style.display = "block";
-        document.getElementById("portfolio_photos").style.display = "flex";
+        document.getElementById("bloc_counter").style.display = "flex";
+        document.getElementById("portfolio_photos").classList.remove("hide");
+        document.getElementById("portfolio_photos").classList.add("portfolio_container");
         document.getElementById("banner").style.display = "block";
-    // document.querySelector(".btn_contact").focus();
     }
-  
 }
 
 // ========================================== CLOSE FORM BY KEYCODE
@@ -341,8 +358,9 @@ closeForm.addEventListener("keydown", (key) => {
     if(key.keyCode === 13){
         document.getElementById("identity_card").style.display = "flex";
         document.getElementById("portfolio").style.display = "block";
-        document.getElementById("bloc_counter").style.display = "block";
-        document.getElementById("portfolio_photos").style.display = "flex";
+        document.getElementById("bloc_counter").style.display = "flex";
+        document.getElementById("portfolio_photos").classList.remove("hide");
+        document.getElementById("portfolio_photos").classList.add("portfolio_container");
         document.getElementById("banner").style.display = "block";
         formBg.style.display = "none";
     }
@@ -669,9 +687,3 @@ class Lightbox {
     }
 }
 // #endregion ============ LIGHTBOX
-
-
-
-
-
-

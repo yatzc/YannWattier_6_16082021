@@ -249,6 +249,11 @@ button {
         width: 3px;
     }
 }
+@media screen and (max-width: 320px) {
+  .btn_tag {
+      font-size: 11px;
+  }
+}
 /* #endregion */
 /* #endregion */
 
@@ -340,6 +345,16 @@ nav li {
         left: 50%;
     }
 }
+@media screen and (max-width: 1050px) {
+    .article_photographer {
+        width: 350px;
+        height: 500px;
+    }
+    .article_photographer img {
+        width: 300px;
+        height: 300px;
+    }
+}
 
 @media screen and (max-width: 900px) {
     img#logo {
@@ -375,7 +390,18 @@ nav li {
     .article_container {
         margin-top: 6em;
     }
+    
 
+}
+@media screen and (max-width: 330px) {
+    .article_photographer {
+        width: 350px;
+        height: 400px;
+    }
+    .article_photographer img {
+        width: 200px;
+        height: 200px;
+    }
 }
 /* #endregion */
 
@@ -485,146 +511,28 @@ nav li {
         height: 93px;
     }
 }
+
+@media screen and (max-width: 320px) {
+  .identity_card h1 {
+      font-size: 30px;
+      line-height: 46.87px;
+  }
+  .identity_card h2 {
+      font-size: 13px;
+      line-height: 16.93px;
+  }
+  .identity_card p {
+      font-size: 10px;
+      line-height: 16.93px;
+  }
+  .identity_card img {
+      width: 93px;
+      height: 93px;
+  }
+}
 /* #endregion == identity */
 
-
-
-
-
-/* #region == SELECT */
-
-
-/* 
-button, li {
-    font-family: DM Sans, sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-}
-.portfolio {
-    margin-left: 2em;
-}
-
-.portfolio_select {
-    display: flex;
-    align-items: center;
-    
-}
-
-.dropdown {
-    position: relative;
-    cursor: pointer;
-    margin: 2em 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-} */
-
-/* .dropdown .dropdown-toggle {
-    appearance: none;
-    background: #901C1C;
-    color: #fff;
-    border: 0;
-    padding: 12px 35px 12px 20px;
-    border-radius: 5px;
-    text-align: left;
-    position: relative;
-    width: 170px;
-    height: 64px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-}
-.dropdown .dropdown-toggle:hover,
-.dropdown .dropdown-toggle:focus {
-    color: #000000;
-    background-color: #D3573C;
-}
-
-.dropdown .dropdown-toggle::after {
-    content: '';
-    position: absolute;
-    right: 15px;
-    top: 17px;
-    background: url(img/select-arrow.svg) center center / 16px 26px no-repeat;
-    width: 40px;
-    height: 50%;
-    transform: rotate(180deg);
-    transition: transform .3s ease-in-out;
-} */
-
-/* .dropdown .dropdown-toggle.active::after {
-    z-index: 80;
-    transform: rotate(360deg);
-    transition: transform .3s ease-in-out;
-}
-
-.dropdown .dropdown-menu {
-    position: absolute;
-    left: 88px;
-    top: 0;
-    transform: translateX(-50%);
-    background: #901C1C;
-    color: white;
-    list-style: none;
-    padding: 5px 0;
-    margin: 0;
-    width: 170px;
-    height: 170px;
-    border-radius: 5px;
-    z-index: 10;
-    visibility: hidden;
-    overflow: auto;
-    max-height: 200px;
-}
-
-.dropdown .dropdown-menu[aria-expanded="true"] {
-    visibility: visible;
-} */
-
-/* .dropdown .dropdown-menu > li {
-    height: 53px;
-    display: block;
-    align-items: center;
-    padding: 16px 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.dropdown .dropdown-menu li:nth-child(2) {
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
-}
-
-.dropdown .dropdown-menu > li:hover,
-.dropdown .dropdown-menu > li:focus {
-    outline: none;
-    background:rgba(0,0,0,0.1);
-}
-@media screen and (max-width: 900px) {
-    .portfolio_select {
-        margin: 1em;
-    }
-} */
-
-
-
-
-
-
-
-
-
-
-
-/* #region == SELECT II */
-/* .css-select,
-.css-select *,
-.css-select *::before,
-.css-select *::after {
-    box-sizing: border-box;
-} */
-
+/* #region == SELECT  */
 
 button, li {
     font-family: DM Sans, sans-serif;
@@ -765,23 +673,6 @@ button, li {
 }
 /* #endregion == SELECT II */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* #endregion ==== SELECT */
-
 /* #region == portpholio */
 .portfolio label {
     font-size: 18px;
@@ -902,7 +793,7 @@ button, li {
 }
 @media screen and (max-width: 1200px) {
     .bloc_counter {
-        display: none;
+        bottom: -100px;
     }
     .photo_article {
         width: 100%;
@@ -926,6 +817,7 @@ button, li {
         flex-wrap: nowrap;
         justify-content: center;
     }
+
 }
 
 /* #endregion ==== portpholio */
@@ -1024,6 +916,10 @@ input:focus {
     resize : none;
     height: 184px;
     font-family: 'DM Sans', sans-serif;
+}
+
+.hide {
+  display: none;
 }
 
 @media screen and (max-width: 700px) {
